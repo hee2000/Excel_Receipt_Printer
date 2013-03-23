@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="Oitijhya1">
+</Property><Property Name="Solution File" Value="D:\Workspace\prog\VB 08\Oitijhya1\Oitijhya1.sln">
+</Property><Property Name="User Options File" Value="D:\Workspace\prog\VB 08\Oitijhya1\Oitijhya1.suo">
+</Property><Property Name="Date" Value="09 February 2013">
+</Property><Property Name="Time" Value="03:29">
+</Property></Properties><Event ErrorLevel="0" Project="" Source="Oitijhya1.sln" Description="File successfully backed up as D:\Workspace\prog\VB 08\Oitijhya1\Backup\Oitijhya1.sln">
+</Event><Event ErrorLevel="0" Project="" Source="Oitijhya1.suo" Description="File successfully backed up as D:\Workspace\prog\VB 08\Oitijhya1\Backup\Oitijhya1.suo">
+</Event><Event ErrorLevel="4" Project="Oitijhya1" Source="http://go.microsoft.com/fwlink/?LinkId=159919" Description="Warning: this project requires Crystal Reports, which is no longer included with Visual Studio. Please click here for more information.">
+</Event><Event ErrorLevel="0" Project="Oitijhya1" Source="Oitijhya1\Oitijhya1.vbproj" Description="Project file successfully backed up as D:\Workspace\prog\VB 08\Oitijhya1\Backup\Oitijhya1\Oitijhya1.vbproj">
+</Event><Event ErrorLevel="0" Project="Oitijhya1" Source="Oitijhya1\Oitijhya1.vbproj.user" Description="Project user file successfully backed up as D:\Workspace\prog\VB 08\Oitijhya1\Backup\Oitijhya1\Oitijhya1.vbproj.user">
+</Event><Event ErrorLevel="0" Project="Oitijhya1" Source="Oitijhya1\Connection.vb" Description="File successfully backed up as D:\Workspace\prog\VB 08\Oitijhya1\Backup\Oitijhya1\Connection.vb">
+</Event><Event ErrorLevel="0" Project="Oitijhya1" Source="Oitijhya1\ReportViewer.Designer.vb" Description="File successfully backed up as D:\Workspace\prog\VB 08\Oitijhya1\Backup\Oitijhya1\ReportViewer.Designer.vb">
+</Event><Event ErrorLevel="0" Project="Oitijhya1" Source="Oitijhya1\ReportViewer.vb" Description="File successfully backed up as D:\Workspace\prog\VB 08\Oitijhya1\Backup\Oitijhya1\ReportViewer.vb">
+</Event><Event ErrorLevel="0" Project="Oitijhya1" Source="Oitijhya1\SelectFilter.Designer.vb" Description="File successfully backed up as D:\Workspace\prog\VB 08\Oitijhya1\Backup\Oitijhya1\SelectFilter.Designer.vb">
+</Event><Event ErrorLevel="0" Project="Oitijhya1" Source="Oitijhya1\SelectFilter.vb" Description="File successfully backed up as D:\Workspace\prog\VB 08\Oitijhya1\Backup\Oitijhya1\SelectFilter.vb">
+</Event><Event ErrorLevel="0" Project="Oitijhya1" Source="Oitijhya1\My Project\AssemblyInfo.vb" Description="File successfully backed up as D:\Workspace\prog\VB 08\Oitijhya1\Backup\Oitijhya1\My Project\AssemblyInfo.vb">
+</Event><Event ErrorLevel="0" Project="Oitijhya1" Source="Oitijhya1\My Project\Application.Designer.vb" Description="File successfully backed up as D:\Workspace\prog\VB 08\Oitijhya1\Backup\Oitijhya1\My Project\Application.Designer.vb">
+</Event><Event ErrorLevel="0" Project="Oitijhya1" Source="Oitijhya1\My Project\Resources.Designer.vb" Description="File successfully backed up as D:\Workspace\prog\VB 08\Oitijhya1\Backup\Oitijhya1\My Project\Resources.Designer.vb">
+</Event><Event ErrorLevel="0" Project="Oitijhya1" Source="Oitijhya1\My Project\Settings.Designer.vb" Description="File successfully backed up as D:\Workspace\prog\VB 08\Oitijhya1\Backup\Oitijhya1\My Project\Settings.Designer.vb">
+</Event><Event ErrorLevel="0" Project="Oitijhya1" Source="Oitijhya1\Start.Designer.vb" Description="File successfully backed up as D:\Workspace\prog\VB 08\Oitijhya1\Backup\Oitijhya1\Start.Designer.vb">
+</Event><Event ErrorLevel="0" Project="Oitijhya1" Source="Oitijhya1\Start.vb" Description="File successfully backed up as D:\Workspace\prog\VB 08\Oitijhya1\Backup\Oitijhya1\Start.vb">
+</Event><Event ErrorLevel="0" Project="Oitijhya1" Source="Oitijhya1\app.config" Description="File successfully backed up as D:\Workspace\prog\VB 08\Oitijhya1\Backup\Oitijhya1\app.config">
+</Event><Event ErrorLevel="0" Project="Oitijhya1" Source="Oitijhya1\My Project\Application.myapp" Description="File successfully backed up as D:\Workspace\prog\VB 08\Oitijhya1\Backup\Oitijhya1\My Project\Application.myapp">
+</Event><Event ErrorLevel="0" Project="Oitijhya1" Source="Oitijhya1\My Project\Settings.settings" Description="File successfully backed up as D:\Workspace\prog\VB 08\Oitijhya1\Backup\Oitijhya1\My Project\Settings.settings">
+</Event><Event ErrorLevel="0" Project="Oitijhya1" Source="Oitijhya1\ReportViewer.resx" Description="File successfully backed up as D:\Workspace\prog\VB 08\Oitijhya1\Backup\Oitijhya1\ReportViewer.resx">
+</Event><Event ErrorLevel="0" Project="Oitijhya1" Source="Oitijhya1\SelectFilter.resx" Description="File successfully backed up as D:\Workspace\prog\VB 08\Oitijhya1\Backup\Oitijhya1\SelectFilter.resx">
+</Event><Event ErrorLevel="0" Project="Oitijhya1" Source="Oitijhya1\My Project\Resources.resx" Description="File successfully backed up as D:\Workspace\prog\VB 08\Oitijhya1\Backup\Oitijhya1\My Project\Resources.resx">
+</Event><Event ErrorLevel="0" Project="Oitijhya1" Source="Oitijhya1\Start.resx" Description="File successfully backed up as D:\Workspace\prog\VB 08\Oitijhya1\Backup\Oitijhya1\Start.resx">
+</Event><Event ErrorLevel="0" Project="Oitijhya1" Source="Oitijhya1\Oitijhya1.vbproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="Oitijhya1" Source="Oitijhya1\Oitijhya1.vbproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="Oitijhya1.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="Oitijhya1.sln" Description="Converted">
+</Event><Event ErrorLevel="0" Project="Oitijhya1" Source="Oitijhya1\Oitijhya1.vbproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="Oitijhya1" Source="Oitijhya1\Oitijhya1.vbproj" Description="References to Microsoft.VisualBasic.PowerPacks.Vs were updated to Microsoft.VisualBasic.PowerPacks.Vs 10.0.">
+</Event></UpgradeLog>

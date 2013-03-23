@@ -1,0 +1,67 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+Oitijhya1
+</name>
+</assembly>
+<members>
+<member name="T:Oitijhya.Students">
+	<summary>
+Represents a strongly typed in-memory cache of data.
+</summary>
+</member><member name="T:Oitijhya.list1DataSet.MembersDataTable">
+	<summary>
+Represents the strongly named DataTable class.
+</summary>
+</member><member name="T:Oitijhya.list1DataSet.MembersRow">
+	<summary>
+Represents strongly named DataRow class.
+</summary>
+</member><member name="T:Oitijhya.list1DataSet.MembersRowChangeEvent">
+	<summary>
+Row event argument class
+</summary>
+</member><member name="T:Oitijhya.list1DataSet">
+	<summary>
+Represents a strongly typed in-memory cache of data.
+</summary>
+</member><member name="T:Oitijhya.list1DataSetTableAdapters.MembersTableAdapter">
+	<summary>
+Represents the connection and commands used to retrieve and save data.
+</summary>
+</member><member name="M:Oitijhya.list1DataSetTableAdapters.TableAdapterManager.UpdateUpdatedRows(Oitijhya.list1DataSet,System.Collections.Generic.List{System.Data.DataRow},System.Collections.Generic.List{System.Data.DataRow})">
+	<summary>
+Update rows in top-down order.
+</summary>
+</member><member name="M:Oitijhya.list1DataSetTableAdapters.TableAdapterManager.UpdateInsertedRows(Oitijhya.list1DataSet,System.Collections.Generic.List{System.Data.DataRow})">
+	<summary>
+Insert rows in top-down order.
+</summary>
+</member><member name="M:Oitijhya.list1DataSetTableAdapters.TableAdapterManager.UpdateDeletedRows(Oitijhya.list1DataSet,System.Collections.Generic.List{System.Data.DataRow})">
+	<summary>
+Delete rows in bottom-up order.
+</summary>
+</member><member name="M:Oitijhya.list1DataSetTableAdapters.TableAdapterManager.GetRealUpdatedRows(System.Data.DataRow[],System.Collections.Generic.List{System.Data.DataRow})">
+	<summary>
+Remove inserted rows that become updated rows after calling TableAdapter.Update(inserted rows) first
+</summary>
+</member><member name="M:Oitijhya.list1DataSetTableAdapters.TableAdapterManager.UpdateAll(Oitijhya.list1DataSet)">
+	<summary>
+Update all changes to the dataset.
+</summary>
+</member><member name="T:Oitijhya.list1DataSetTableAdapters.TableAdapterManager.UpdateOrderOption">
+	<summary>
+Update Order Option
+</summary>
+</member><member name="T:Oitijhya.list1DataSetTableAdapters.TableAdapterManager.SelfReferenceComparer">
+	<summary>
+Used to sort self-referenced table's rows
+</summary>
+</member><member name="T:Oitijhya.list1DataSetTableAdapters.TableAdapterManager">
+	<summary>
+TableAdapterManager is used to coordinate TableAdapters in the dataset to enable Hierarchical Update scenarios
+</summary>
+</member>
+</members>
+</doc>
