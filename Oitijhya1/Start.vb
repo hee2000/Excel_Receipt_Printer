@@ -11,8 +11,30 @@ Public Class Start
         gridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect
         optFilter.Enabled = False
     End Sub
+    Public Function GetExcelData(ByVal ASpreadSheet As String, ByRef AnError As String, ByVal ASheetName As String) As DataTable
+
+        Dim connString As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" & ASpreadSheet & ";Extended Properties=""Excel 8.0;HDR=Yes;"""
+        Dim conn As OleDbConnection = New OleDbConnection(connString)
+        Dim Dset As New DataTable
+        AnError = ""
+        Try
+            Using conn
+                conn.Open()
+                Dim schemaTable As DataTable = conn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, Nothing)
+                Dim firstSheetName As String = CType(schemaTable.Rows(0).Item("TABLE_NAME"), String)
+                Dim MyCommand As OleDbDataAdapter = New OleDbDataAdapter("select * from [" & ASheetName & "$]", conn)
+                MyCommand.Fill(Dset)
+            End Using
+        Catch ex As Exception
+            AnError = ex.ToString
+            Return Nothing
+        End Try
+        Return Dset
+    End Function
+
     Private Sub initialiseAdaptor()
         conn.ConnectionString = Configuration.ConfigurationManager.ConnectionStrings("OitijhyaDatabase").ConnectionString()
+
         Try
             conn.Open()
             'MsgBox("Connection established!")
@@ -96,16 +118,57 @@ Public Class Start
     End Sub
     Private Sub updateDatabase()
         Dim fileDg As New OpenFileDialog
-        fileDg.Filter = "Access Files (*.accdb)|*.accdb|All files(*.*)|*.*"
+        fileDg.Filter = "Access Files (*.accdb)|*.accdb|Excel Files(*.xls)|*.xls|All files(*.*)|*.*"
         fileDg.ShowDialog()
         Dim source As String = fileDg.FileName
         Dim dest As String = System.IO.Directory.GetCurrentDirectory
         If System.IO.File.Exists(source) Then
-            'MsgBox("Copy Started")
-            If System.IO.File.Exists(dest & "\dBase.accdb") Then
+            If (System.IO.Path.GetExtension(source) = ".xls") Then
+                Dim tempTable = New DataTable
+                Dim err As String = Nothing
+                tempTable = GetExcelData(source, err, "Sheet1")
+                'MsgBox(tempTable.Rows.Count.ToString())
+                'My.Computer.FileSystem.DeleteFile(dest & "\dBase.accdb", FileIO.UIOption.AllDialogs, FileIO.RecycleOption.DeletePermanently, FileIO.UICancelOption.DoNothing)
+                'creating new table in .accdb file and populating it
+                Dim OLEConnection As New OleDb.OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" & dest & "\dBase.accdb" & ";Persist Security Info=True")
+                OLEConnection.Open()
+                Dim OLECommand As New OleDb.OleDbCommand("", OLEConnection)
+                ' Before this line we create a string that holds build for the table structure
+                Dim createStr As String = Nothing
+                createStr = "CREATE TABLE " & tableName & "("
+                Dim dtype As String = Nothing
+                Dim dsize As Integer
+                For Each dc As DataColumn In tempTable.Columns
+                    dsize = 4
+                    If (dc.DataType.ToString() = "System.Double") Then
+                        dtype = " INTEGER"
+                        createStr = createStr & "[" & dc.Caption & "] " & dtype
+                    ElseIf (dc.DataType.ToString() = "System.String" Or dc.DataType.ToString() = "System.DateTime") Then
+                        dtype = " TEXT"
+                        createStr = createStr & "[" & dc.Caption & "] " & " " & dtype & "(" & dsize.ToString() & ")"
+                    End If
+
+                    If (dc.Caption = tempTable.Columns(0).Caption) Then
+                        createStr = createStr & " NOT NULL"
+                    End If
+                    createStr = createStr & ","
+                Next
+                createStr = createStr.Substring(0, createStr.Length - 1)
+                createStr = createStr & ")"
+                'MsgBox(createStr)
+                Dim dropCommand As New OleDb.OleDbCommand("", OLEConnection)
+                dropCommand.CommandText = "DROP TABLE " & tableName
+                dropCommand.ExecuteNonQuery()
+                OLECommand.CommandText = createStr
+                OLECommand.ExecuteNonQuery()
+                conn.Open()
+                dAdaptor.Update(tempTable)
+                conn.Close()
+                'MsgBox("Copy Started")
+            ElseIf System.IO.File.Exists(dest & "\dBase.accdb") Then
                 My.Computer.FileSystem.CopyFile(dest & "\dBase.accdb", dest & "\rollback.accdb", FileIO.UIOption.AllDialogs, _
                 FileIO.UICancelOption.DoNothing)
-                My.Computer.FileSystem.CopyFile(source, dest & "\dBase.accdb", FileIO.UIOption.AllDialogs, _
+                My.Computer.FileSystem.CopyFile(source, dest & "\dBase.accdb", FileIO.UIOption.OnlyErrorDialogs, _
                 FileIO.UICancelOption.DoNothing)
             Else
                 My.Computer.FileSystem.CopyFile(source, dest & "\dBase.accdb", FileIO.UIOption.AllDialogs, _
