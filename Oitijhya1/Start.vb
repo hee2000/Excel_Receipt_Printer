@@ -3,7 +3,7 @@ Imports System.Data.Common
 Public Class Start
 
     Private Sub Start_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        'TODO: This line of code loads data into the 'List1DataSet.Members' table. You can move, or remove it, as needed.
+        'TODO: This line of code loads data into the 'List1DataSet."& tableName &"' table. You can move, or remove it, as needed.
         initialiseAdaptor()
         'grid properties
         gridView.DataSource = gridDataTable
@@ -22,19 +22,28 @@ Public Class Start
             conn.Open()
             'MsgBox("Connection established!")
         End Try
+        'small code snippet to get table names
+        Dim userTables As DataTable = Nothing
+        Dim restrictions() As String = New String(3) {}
+        restrictions(3) = "Table"
+        userTables = conn.GetSchema("Tables", restrictions)
+        Dim dr As DataRow = userTables.Rows(2)
+        tableName = dr("TABLE_NAME")
+        'end snippet
         'makes the data adaptor
-        dAdaptor = New OleDb.OleDbDataAdapter("Select * From Members", conn)
-        
+        dAdaptor = New OleDb.OleDbDataAdapter("Select * From " & tableName & "", conn)
+        Me.Text = tableName
         'friendly names
-        'Dim custom As DataTableMapping = dAdaptor.TableMappings.Add("Members", "Oitijhya Member List")
+        'Dim custom As DataTableMapping = dAdaptor.TableMappings.Add(""& tableName &"", "Oitijhya Member List")
         'custom.ColumnMappings.Add("SNo", "Serial No.")
         gridDataTable.Clear()
         dAdaptor.Fill(gridDataTable)
+        
         conn.Close()
         'delete command of adaptor
         Dim del As New OleDb.OleDbCommand
         Dim boundColumn As String = gridDataTable.Columns(0).Caption
-        del.CommandText = "DELETE FROM MEMBERS WHERE " & boundColumn & "=?"
+        del.CommandText = "DELETE FROM " & tableName & " WHERE " & boundColumn & "=?"
         del.Connection = conn
         Dim Param As OleDbParameter = del.Parameters.Add(boundColumn, OleDbType.Integer, 4)
         Param.SourceColumn = boundColumn
@@ -45,7 +54,7 @@ Public Class Start
         Dim insCol As New OleDb.OleDbCommand
         Dim InsCmdStr As String = String.Empty
         Dim insParam(gridView.Columns.Count) As OleDbParameter
-        InsCmdStr = "Insert into members values("
+        InsCmdStr = "Insert into " & tableName & " values("
         For i = 0 To gridDataTable.Columns.Count - 2
             InsCmdStr = InsCmdStr & "?,"
             insParam(i) = ins.Parameters.AddWithValue(gridDataTable.Columns(i).Caption, gridDataTable.Columns(i).GetType)
@@ -65,7 +74,7 @@ Public Class Start
         Dim updcol As New OleDb.OleDbCommand
         Dim updCmdStr As String = String.Empty
         Dim updParam(gridView.Columns.Count) As OleDbParameter
-        updCmdStr = "Update members set "
+        updCmdStr = "Update " & tableName & " set "
         For i = 1 To gridView.Columns.Count - 2
             updCmdStr = updCmdStr & Chr(34) & gridDataTable.Columns(i).Caption & Chr(34) & "=?,"
             updParam(i) = upd.Parameters.AddWithValue(gridDataTable.Columns(i).Caption, gridDataTable.Columns(i).GetType)
@@ -83,7 +92,7 @@ Public Class Start
         upd.CommandText = updCmdStr
         upd.Connection = conn
         dAdaptor.UpdateCommand = upd
-        MsgBox(dAdaptor.UpdateCommand.CommandText)
+        'MsgBox(dAdaptor.UpdateCommand.CommandText)
     End Sub
     Private Sub updateDatabase()
         Dim fileDg As New OpenFileDialog
