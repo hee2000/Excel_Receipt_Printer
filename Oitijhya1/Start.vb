@@ -31,38 +31,7 @@ Public Class Start
         End Try
         Return Dset
     End Function
-
-    Private Sub initialiseAdaptor()
-        conn.ConnectionString = Configuration.ConfigurationManager.ConnectionStrings("OitijhyaDatabase").ConnectionString()
-
-        Try
-            conn.Open()
-            'MsgBox("Connection established!")
-        Catch
-            MsgBox("Database not found. Locate database.", MsgBoxStyle.Exclamation)
-            updateDatabase()
-            conn.Open()
-            'MsgBox("Connection established!")
-        End Try
-        'small code snippet to get table names
-        Dim userTables As DataTable = Nothing
-        Dim restrictions() As String = New String(3) {}
-        restrictions(3) = "Table"
-        userTables = conn.GetSchema("Tables", restrictions)
-        Dim dr As DataRow = userTables.Rows(2)
-        tableName = dr("TABLE_NAME")
-        'end snippet
-        'makes the data adaptor
-        dAdaptor = New OleDb.OleDbDataAdapter("Select * From " & tableName & "", conn)
-        Me.Text = tableName
-        'friendly names
-        'Dim custom As DataTableMapping = dAdaptor.TableMappings.Add(""& tableName &"", "Oitijhya Member List")
-        'custom.ColumnMappings.Add("SNo", "Serial No.")
-        gridDataTable.Clear()
-        dAdaptor.Fill(gridDataTable)
-        
-        conn.Close()
-        'delete command of adaptor
+    Private Sub makeDelCommand()
         Dim del As New OleDb.OleDbCommand
         Dim boundColumn As String = gridDataTable.Columns(0).Caption
         del.CommandText = "DELETE FROM " & tableName & " WHERE " & boundColumn & "=?"
@@ -71,7 +40,8 @@ Public Class Start
         Param.SourceColumn = boundColumn
         Param.SourceVersion = DataRowVersion.Original
         dAdaptor.DeleteCommand = del
-        'insert command
+    End Sub
+    Private Sub makeInsCommand()
         Dim ins As New OleDb.OleDbCommand
         Dim insCol As New OleDb.OleDbCommand
         Dim InsCmdStr As String = String.Empty
@@ -91,7 +61,8 @@ Public Class Start
         ins.CommandText = InsCmdStr
         ins.Connection = conn
         dAdaptor.InsertCommand = ins
-        'Update command
+    End Sub
+    Private Sub makeUpdCommand()
         Dim upd As New OleDb.OleDbCommand
         Dim updcol As New OleDb.OleDbCommand
         Dim updCmdStr As String = String.Empty
@@ -103,22 +74,71 @@ Public Class Start
             updParam(i).SourceColumn = gridDataTable.Columns(i).Caption
             updParam(i).SourceVersion = DataRowVersion.Original
         Next
+        Dim j As Integer = gridDataTable.Columns.Count - 1
         updCmdStr = updCmdStr & Chr(34) & gridDataTable.Columns(j).Caption & Chr(34) & "=?"
-        insParam(j) = ins.Parameters.AddWithValue(gridDataTable.Columns(j).Caption, gridDataTable.Columns(j).GetType)
-        insParam(j).SourceColumn = gridDataTable.Columns(j).Caption
-        insParam(j).SourceVersion = DataRowVersion.Current
+        updParam(j) = upd.Parameters.AddWithValue(gridDataTable.Columns(j).Caption, gridDataTable.Columns(j).GetType)
+        updParam(j).SourceColumn = gridDataTable.Columns(j).Caption
+        updParam(j).SourceVersion = DataRowVersion.Current
         updCmdStr = updCmdStr & " Where " & Chr(34) & gridDataTable.Columns(0).Caption & Chr(34) & "=?"
-        insParam(0) = ins.Parameters.AddWithValue(gridDataTable.Columns(0).Caption, gridDataTable.Columns(0).GetType)
-        insParam(0).SourceColumn = gridDataTable.Columns(0).Caption
-        insParam(0).SourceVersion = DataRowVersion.Original
+        updParam(0) = upd.Parameters.AddWithValue(gridDataTable.Columns(0).Caption, gridDataTable.Columns(0).GetType)
+        updParam(0).SourceColumn = gridDataTable.Columns(0).Caption
+        updParam(0).SourceVersion = DataRowVersion.Original
         upd.CommandText = updCmdStr
         upd.Connection = conn
         dAdaptor.UpdateCommand = upd
         'MsgBox(dAdaptor.UpdateCommand.CommandText)
     End Sub
+    Private Function getTableName(ByRef connection As OleDb.OleDbConnection) As String
+        Dim flag As Boolean = False
+        If (connection.State = ConnectionState.Closed) Then
+            connection.Open()
+            flag = True
+        End If
+        Dim userTables As DataTable = Nothing
+        Dim restrictions() As String = New String(3) {}
+        restrictions(3) = "Table"
+        userTables = conn.GetSchema("Tables", restrictions)
+        Dim dr As DataRow = userTables.Rows(2)
+        tableName = dr("TABLE_NAME")
+        Return tableName
+        If (flag = True) Then
+            connection.Close()
+        End If
+    End Function
+    Private Sub initialiseAdaptor()
+        conn.ConnectionString = Configuration.ConfigurationManager.ConnectionStrings("OitijhyaDatabase").ConnectionString()
+
+        Try
+            conn.Open()
+            'MsgBox("Connection established!")
+        Catch
+            MsgBox("Database not found. Locate database.", MsgBoxStyle.Exclamation)
+            updateDatabase()
+            conn.Open()
+            'MsgBox("Connection established!")
+        End Try
+        'small code snippet to get table names
+        tableName = getTableName(conn)
+        'end snippet
+        'makes the data adaptor
+        dAdaptor = New OleDb.OleDbDataAdapter("Select * From " & tableName & "", conn)
+        Me.Text = tableName
+        'friendly names
+        'Dim custom As DataTableMapping = dAdaptor.TableMappings.Add(""& tableName &"", "Oitijhya Member List")
+        'custom.ColumnMappings.Add("SNo", "Serial No.")
+        gridDataTable.Clear()
+        dAdaptor.Fill(gridDataTable)
+        conn.Close()
+        'delete command of adaptor
+        makeDelCommand()
+        'insert command
+        makeInsCommand()
+        'Update command
+        makeUpdCommand()
+    End Sub
     Private Sub updateDatabase()
         Dim fileDg As New OpenFileDialog
-        fileDg.Filter = "Access Files (*.accdb)|*.accdb|Excel Files(*.xls)|*.xls|All files(*.*)|*.*"
+        fileDg.Filter = "Excel Files(*.xls)|*.xls|Access Files (*.accdb)|*.accdb|All files(*.*)|*.*"
         fileDg.ShowDialog()
         Dim source As String = fileDg.FileName
         Dim dest As String = System.IO.Directory.GetCurrentDirectory
@@ -133,6 +153,9 @@ Public Class Start
                 Dim OLEConnection As New OleDb.OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" & dest & "\dBase.accdb" & ";Persist Security Info=True")
                 OLEConnection.Open()
                 Dim OLECommand As New OleDb.OleDbCommand("", OLEConnection)
+                Dim dropCommand As New OleDb.OleDbCommand("", OLEConnection)
+                dropCommand.CommandText = "DROP TABLE " & tableName
+                dropCommand.ExecuteNonQuery()
                 ' Before this line we create a string that holds build for the table structure
                 Dim createStr As String = Nothing
                 createStr = "CREATE TABLE " & tableName & "("
@@ -153,17 +176,27 @@ Public Class Start
                     End If
                     createStr = createStr & ","
                 Next
-                createStr = createStr.Substring(0, createStr.Length - 1)
+                createStr = createStr & "Primary Key (" & tempTable.Columns(0).Caption & ")"
+                'createStr = createStr.Substring(0, createStr.Length - 1)
                 createStr = createStr & ")"
                 'MsgBox(createStr)
-                Dim dropCommand As New OleDb.OleDbCommand("", OLEConnection)
-                dropCommand.CommandText = "DROP TABLE " & tableName
-                dropCommand.ExecuteNonQuery()
                 OLECommand.CommandText = createStr
                 OLECommand.ExecuteNonQuery()
+                gridDataTable = tempTable
+                MsgBox("GridDataTable Row count=" & gridDataTable.Rows.Count.ToString())
+                'makeInsCommand()
+                'makeDelCommand()
+                'makeUpdCommand()
+                Dim updAdaptor As New OleDb.OleDbDataAdapter("SELECT * FROM Members", conn)
+                Dim updAdCommandBuilder As New OleDb.OleDbCommandBuilder(updAdaptor)
+                'updAdaptor.SelectCommand = dAdaptor.SelectCommand
+                updAdaptor.InsertCommand = updAdCommandBuilder.GetInsertCommand()
+                updAdaptor.UpdateCommand = updAdCommandBuilder.GetUpdateCommand()
                 conn.Open()
-                dAdaptor.Update(tempTable)
+                'MsgBox(tempTable.Rows.Count.ToString())
+                updAdaptor.Update(gridDataTable)
                 conn.Close()
+                'gridView.DataSource = gridDataTable
                 'MsgBox("Copy Started")
             ElseIf System.IO.File.Exists(dest & "\dBase.accdb") Then
                 My.Computer.FileSystem.CopyFile(dest & "\dBase.accdb", dest & "\rollback.accdb", FileIO.UIOption.AllDialogs, _
