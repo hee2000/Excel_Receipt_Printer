@@ -31,63 +31,63 @@ Public Class Start
         End Try
         Return Dset
     End Function
-    Private Sub makeDelCommand()
+    Private Function makeDelCommand(ByRef table As DataTable) As OleDb.OleDbCommand
         Dim del As New OleDb.OleDbCommand
-        Dim boundColumn As String = gridDataTable.Columns(0).Caption
+        Dim boundColumn As String = table.Columns(0).Caption
         del.CommandText = "DELETE FROM " & tableName & " WHERE " & boundColumn & "=?"
         del.Connection = conn
         Dim Param As OleDbParameter = del.Parameters.Add(boundColumn, OleDbType.Integer, 4)
         Param.SourceColumn = boundColumn
         Param.SourceVersion = DataRowVersion.Original
-        dAdaptor.DeleteCommand = del
-    End Sub
-    Private Sub makeInsCommand()
+        Return del
+    End Function
+    Private Function makeInsCommand(ByRef table As DataTable) As OleDb.OleDbCommand
         Dim ins As New OleDb.OleDbCommand
         Dim insCol As New OleDb.OleDbCommand
         Dim InsCmdStr As String = String.Empty
-        Dim insParam(gridView.Columns.Count) As OleDbParameter
+        Dim insParam(table.Columns.Count) As OleDbParameter
         InsCmdStr = "Insert into " & tableName & " values("
-        For i = 0 To gridDataTable.Columns.Count - 2
+        For i = 0 To table.Columns.Count - 2
             InsCmdStr = InsCmdStr & "?,"
-            insParam(i) = ins.Parameters.AddWithValue(gridDataTable.Columns(i).Caption, gridDataTable.Columns(i).GetType)
-            insParam(i).SourceColumn = gridDataTable.Columns(i).Caption
+            insParam(i) = ins.Parameters.AddWithValue(table.Columns(i).Caption, table.Columns(i).GetType)
+            insParam(i).SourceColumn = table.Columns(i).Caption
             insParam(i).SourceVersion = DataRowVersion.Original
         Next
         InsCmdStr = InsCmdStr & "?)"
-        Dim j As Integer = gridDataTable.Columns.Count - 1
-        insParam(j) = ins.Parameters.AddWithValue(gridDataTable.Columns(j).Caption, gridDataTable.Columns(j).GetType)
-        insParam(j).SourceColumn = gridDataTable.Columns(j).Caption
+        Dim j As Integer = table.Columns.Count - 1
+        insParam(j) = ins.Parameters.AddWithValue(table.Columns(j).Caption, table.Columns(j).GetType)
+        insParam(j).SourceColumn = table.Columns(j).Caption
         insParam(j).SourceVersion = DataRowVersion.Original
         ins.CommandText = InsCmdStr
         ins.Connection = conn
-        dAdaptor.InsertCommand = ins
-    End Sub
-    Private Sub makeUpdCommand()
+        Return ins
+    End Function
+    Private Function makeUpdCommand(ByRef table As DataTable) As OleDb.OleDbCommand
         Dim upd As New OleDb.OleDbCommand
         Dim updcol As New OleDb.OleDbCommand
         Dim updCmdStr As String = String.Empty
-        Dim updParam(gridView.Columns.Count) As OleDbParameter
+        Dim updParam(table.Columns.Count) As OleDbParameter
         updCmdStr = "Update " & tableName & " set "
-        For i = 1 To gridView.Columns.Count - 2
-            updCmdStr = updCmdStr & Chr(34) & gridDataTable.Columns(i).Caption & Chr(34) & "=?,"
-            updParam(i) = upd.Parameters.AddWithValue(gridDataTable.Columns(i).Caption, gridDataTable.Columns(i).GetType)
-            updParam(i).SourceColumn = gridDataTable.Columns(i).Caption
+        For i = 1 To table.Columns.Count - 2
+            updCmdStr = updCmdStr & "[" & table.Columns(i).Caption & "]" & "=?,"
+            updParam(i) = upd.Parameters.AddWithValue(table.Columns(i).Caption, table.Columns(i).GetType)
+            updParam(i).SourceColumn = table.Columns(i).Caption
             updParam(i).SourceVersion = DataRowVersion.Original
         Next
-        Dim j As Integer = gridDataTable.Columns.Count - 1
-        updCmdStr = updCmdStr & Chr(34) & gridDataTable.Columns(j).Caption & Chr(34) & "=?"
-        updParam(j) = upd.Parameters.AddWithValue(gridDataTable.Columns(j).Caption, gridDataTable.Columns(j).GetType)
-        updParam(j).SourceColumn = gridDataTable.Columns(j).Caption
+        Dim j As Integer = table.Columns.Count - 1
+        updCmdStr = updCmdStr & "[" & table.Columns(j).Caption & "]" & "=?"
+        updParam(j) = upd.Parameters.AddWithValue(table.Columns(j).Caption, table.Columns(j).GetType)
+        updParam(j).SourceColumn = table.Columns(j).Caption
         updParam(j).SourceVersion = DataRowVersion.Current
-        updCmdStr = updCmdStr & " Where " & Chr(34) & gridDataTable.Columns(0).Caption & Chr(34) & "=?"
-        updParam(0) = upd.Parameters.AddWithValue(gridDataTable.Columns(0).Caption, gridDataTable.Columns(0).GetType)
-        updParam(0).SourceColumn = gridDataTable.Columns(0).Caption
+        updCmdStr = updCmdStr & " Where " & "" & table.Columns(0).Caption & "" & "=?"
+        updParam(0) = upd.Parameters.AddWithValue(table.Columns(0).Caption, table.Columns(0).GetType)
+        updParam(0).SourceColumn = table.Columns(0).Caption
         updParam(0).SourceVersion = DataRowVersion.Original
         upd.CommandText = updCmdStr
         upd.Connection = conn
-        dAdaptor.UpdateCommand = upd
+        Return upd
         'MsgBox(dAdaptor.UpdateCommand.CommandText)
-    End Sub
+    End Function
     Private Function getTableName(ByRef connection As OleDb.OleDbConnection) As String
         Dim flag As Boolean = False
         If (connection.State = ConnectionState.Closed) Then
@@ -98,8 +98,14 @@ Public Class Start
         Dim restrictions() As String = New String(3) {}
         restrictions(3) = "Table"
         userTables = conn.GetSchema("Tables", restrictions)
-        Dim dr As DataRow = userTables.Rows(2)
-        tableName = dr("TABLE_NAME")
+        Try
+            Dim dr As DataRow = userTables.Rows(2)
+            tableName = dr("TABLE_NAME")
+        Catch ex As Exception
+
+            tableName = "Members"
+        End Try
+        
         Return tableName
         If (flag = True) Then
             connection.Close()
@@ -123,19 +129,50 @@ Public Class Start
         'makes the data adaptor
         dAdaptor = New OleDb.OleDbDataAdapter("Select * From " & tableName & "", conn)
         Me.Text = tableName
+        'dAdaptor.SelectCommand = New OleDbCommand("Select * From " & tableName & "", conn)
         'friendly names
         'Dim custom As DataTableMapping = dAdaptor.TableMappings.Add(""& tableName &"", "Oitijhya Member List")
         'custom.ColumnMappings.Add("SNo", "Serial No.")
-        gridDataTable.Clear()
+        'gridDataTable.Clear()
+        gridDataTable = New DataTable()
         dAdaptor.Fill(gridDataTable)
+        gridView.DataSource = gridDataTable
+        dAdaptorCB = New OleDb.OleDbCommandBuilder(dAdaptor)
+        'dAdaptor.SelectCommand.CommandText = "Select * From " & tableName & ""
+        'dAdaptor.InsertCommand = dAdaptorCB.GetInsertCommand()
+        'dAdaptor.DeleteCommand = dAdaptorCB.GetDeleteCommand()
+        dAdaptor.UpdateCommand = dAdaptorCB.GetUpdateCommand()
+        dAdaptor.InsertCommand = makeInsCommand(gridDataTable)
+        dAdaptor.DeleteCommand = makeDelCommand(gridDataTable)
+        'dAdaptor.UpdateCommand = makeUpdCommand(gridDataTable)
         conn.Close()
-        'delete command of adaptor
-        makeDelCommand()
-        'insert command
-        makeInsCommand()
-        'Update command
-        makeUpdCommand()
     End Sub
+    Private Function createTableQuery(ByRef tableName As String, ByRef table As DataTable) As String
+        Dim createStr As String = Nothing
+        createStr = "CREATE TABLE " & tableName & "("
+        Dim dtype As String = Nothing
+        Dim dsize As Integer
+        Dim colName As String = Nothing
+        For Each dc As DataColumn In table.Columns
+            dsize = 255
+
+            If (dc.DataType.ToString() = "System.Double") Then
+                dtype = " INTEGER"
+                createStr = createStr & "[" & dc.Caption & "] " & dtype
+            ElseIf (dc.DataType.ToString() = "System.String" Or dc.DataType.ToString() = "System.DateTime") Then
+                dtype = " TEXT"
+                createStr = createStr & "[" & dc.Caption & "] " & " " & dtype & "(" & dsize.ToString() & ")"
+            End If
+
+            If (dc.Caption = table.Columns(0).Caption) Then
+                createStr = createStr & " NOT NULL"
+            End If
+            createStr = createStr & ","
+        Next
+        createStr = createStr & "Primary Key (" & table.Columns(0).Caption & ")"
+        createStr = createStr & ")"
+        Return createStr
+    End Function
     Private Sub updateDatabase()
         Dim fileDg As New OpenFileDialog
         fileDg.Filter = "Excel Files(*.xls)|*.xls|Access Files (*.accdb)|*.accdb|All files(*.*)|*.*"
@@ -150,54 +187,33 @@ Public Class Start
                 'MsgBox(tempTable.Rows.Count.ToString())
                 'My.Computer.FileSystem.DeleteFile(dest & "\dBase.accdb", FileIO.UIOption.AllDialogs, FileIO.RecycleOption.DeletePermanently, FileIO.UICancelOption.DoNothing)
                 'creating new table in .accdb file and populating it
-                Dim OLEConnection As New OleDb.OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" & dest & "\dBase.accdb" & ";Persist Security Info=True")
-                OLEConnection.Open()
-                Dim OLECommand As New OleDb.OleDbCommand("", OLEConnection)
-                Dim dropCommand As New OleDb.OleDbCommand("", OLEConnection)
-                dropCommand.CommandText = "DROP TABLE " & tableName
-                dropCommand.ExecuteNonQuery()
-                ' Before this line we create a string that holds build for the table structure
-                Dim createStr As String = Nothing
-                createStr = "CREATE TABLE " & tableName & "("
-                Dim dtype As String = Nothing
-                Dim dsize As Integer
-                For Each dc As DataColumn In tempTable.Columns
-                    dsize = 4
-                    If (dc.DataType.ToString() = "System.Double") Then
-                        dtype = " INTEGER"
-                        createStr = createStr & "[" & dc.Caption & "] " & dtype
-                    ElseIf (dc.DataType.ToString() = "System.String" Or dc.DataType.ToString() = "System.DateTime") Then
-                        dtype = " TEXT"
-                        createStr = createStr & "[" & dc.Caption & "] " & " " & dtype & "(" & dsize.ToString() & ")"
-                    End If
-
-                    If (dc.Caption = tempTable.Columns(0).Caption) Then
-                        createStr = createStr & " NOT NULL"
-                    End If
-                    createStr = createStr & ","
-                Next
-                createStr = createStr & "Primary Key (" & tempTable.Columns(0).Caption & ")"
-                'createStr = createStr.Substring(0, createStr.Length - 1)
-                createStr = createStr & ")"
-                'MsgBox(createStr)
-                OLECommand.CommandText = createStr
-                OLECommand.ExecuteNonQuery()
-                gridDataTable = tempTable
-                MsgBox("GridDataTable Row count=" & gridDataTable.Rows.Count.ToString())
-                'makeInsCommand()
-                'makeDelCommand()
-                'makeUpdCommand()
-                Dim updAdaptor As New OleDb.OleDbDataAdapter("SELECT * FROM Members", conn)
-                Dim updAdCommandBuilder As New OleDb.OleDbCommandBuilder(updAdaptor)
-                'updAdaptor.SelectCommand = dAdaptor.SelectCommand
-                updAdaptor.InsertCommand = updAdCommandBuilder.GetInsertCommand()
-                updAdaptor.UpdateCommand = updAdCommandBuilder.GetUpdateCommand()
+                'Dim OLEConnection As New OleDb.OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" & dest & "\dBase.accdb" & ";Persist Security Info=True")
                 conn.Open()
-                'MsgBox(tempTable.Rows.Count.ToString())
-                updAdaptor.Update(gridDataTable)
+                Dim createCommand As New OleDb.OleDbCommand("", conn)
+                Dim dropCommand As New OleDb.OleDbCommand("", conn)
+                dropCommand.CommandText = "DROP TABLE " & tableName
+                createCommand.CommandText = createTableQuery(tableName, tempTable)
+                dropCommand.ExecuteNonQuery()
+                createCommand.ExecuteNonQuery()
                 conn.Close()
-                'gridView.DataSource = gridDataTable
-                'MsgBox("Copy Started")
+                gridDataTable = New DataTable
+                gridDataTable = tempTable.Clone()
+                Dim updAdaptor As New OleDb.OleDbDataAdapter("Select * From " & tableName & "", conn)
+                Dim updAdCommandBuilder As OleDb.OleDbCommandBuilder = New OleDb.OleDbCommandBuilder(updAdaptor)
+                updAdaptor.InsertCommand = makeInsCommand(tempTable)
+                gridDataTable.Clear()
+                Dim temprow As DataRow = Nothing
+                conn.Open()
+                For Each row As DataRow In tempTable.Rows
+                    gridDataTable.Rows.Add(row.ItemArray)
+                    Try
+                        updAdaptor.Update(gridDataTable)
+                    Catch ex As Exception
+                        'MsgBox("Error at GridDataTable Row count=" & gridDataTable.Rows.Count.ToString())
+                    End Try
+                Next
+
+                conn.Close()
             ElseIf System.IO.File.Exists(dest & "\dBase.accdb") Then
                 My.Computer.FileSystem.CopyFile(dest & "\dBase.accdb", dest & "\rollback.accdb", FileIO.UIOption.AllDialogs, _
                 FileIO.UICancelOption.DoNothing)
@@ -319,7 +335,10 @@ Public Class Start
 
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSave.Click
         If MsgBox("Are you sure? Changes will be permanent.", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+            'MsgBox(dAdaptor.UpdateCommand.CommandText.ToString)
+            conn.Open()
             dAdaptor.Update(gridDataTable)
+            conn.Close()
         End If
     End Sub
 

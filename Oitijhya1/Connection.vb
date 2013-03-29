@@ -5,4 +5,5 @@
     Public gridDataTable As New DataTable 'primary data that has all information
     Public dAdaptor As New OleDb.OleDbDataAdapter
     Public filteredData As DataTable  'filtered data
+    Public dAdaptorCB As OleDb.OleDbCommandBuilder
 End Module

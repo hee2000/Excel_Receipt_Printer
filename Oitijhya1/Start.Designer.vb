@@ -64,7 +64,7 @@ Partial Class Start
         Me.gridView.DefaultCellStyle = DataGridViewCellStyle2
         Me.gridView.Location = New System.Drawing.Point(12, 12)
         Me.gridView.Name = "gridView"
-        Me.gridView.Size = New System.Drawing.Size(786, 388)
+        Me.gridView.Size = New System.Drawing.Size(871, 469)
         Me.gridView.TabIndex = 0
         '
         'GridRCMenu
@@ -99,7 +99,7 @@ Partial Class Start
         '
         'cmdLoad
         '
-        Me.cmdLoad.Location = New System.Drawing.Point(428, 411)
+        Me.cmdLoad.Location = New System.Drawing.Point(513, 493)
         Me.cmdLoad.Name = "cmdLoad"
         Me.cmdLoad.Size = New System.Drawing.Size(125, 29)
         Me.cmdLoad.TabIndex = 1
@@ -108,7 +108,7 @@ Partial Class Start
         '
         'cmdRollback
         '
-        Me.cmdRollback.Location = New System.Drawing.Point(680, 411)
+        Me.cmdRollback.Location = New System.Drawing.Point(765, 493)
         Me.cmdRollback.Name = "cmdRollback"
         Me.cmdRollback.Size = New System.Drawing.Size(118, 29)
         Me.cmdRollback.TabIndex = 2
@@ -118,7 +118,7 @@ Partial Class Start
         'optFilter
         '
         Me.optFilter.AutoSize = True
-        Me.optFilter.Location = New System.Drawing.Point(12, 406)
+        Me.optFilter.Location = New System.Drawing.Point(12, 487)
         Me.optFilter.Name = "optFilter"
         Me.optFilter.Size = New System.Drawing.Size(97, 17)
         Me.optFilter.TabIndex = 3
@@ -129,7 +129,7 @@ Partial Class Start
         '
         Me.optFull.AutoSize = True
         Me.optFull.Checked = True
-        Me.optFull.Location = New System.Drawing.Point(12, 423)
+        Me.optFull.Location = New System.Drawing.Point(12, 504)
         Me.optFull.Name = "optFull"
         Me.optFull.Size = New System.Drawing.Size(71, 17)
         Me.optFull.TabIndex = 4
@@ -139,7 +139,7 @@ Partial Class Start
         '
         'cmdSave
         '
-        Me.cmdSave.Location = New System.Drawing.Point(559, 411)
+        Me.cmdSave.Location = New System.Drawing.Point(644, 493)
         Me.cmdSave.Name = "cmdSave"
         Me.cmdSave.Size = New System.Drawing.Size(115, 29)
         Me.cmdSave.TabIndex = 5
@@ -149,7 +149,7 @@ Partial Class Start
         'cmdPrint
         '
         Me.cmdPrint.Enabled = False
-        Me.cmdPrint.Location = New System.Drawing.Point(310, 411)
+        Me.cmdPrint.Location = New System.Drawing.Point(395, 493)
         Me.cmdPrint.Name = "cmdPrint"
         Me.cmdPrint.Size = New System.Drawing.Size(112, 29)
         Me.cmdPrint.TabIndex = 6
@@ -160,14 +160,14 @@ Partial Class Start
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(812, 447)
-        Me.Controls.Add(Me.cmdPrint)
-        Me.Controls.Add(Me.optFull)
-        Me.Controls.Add(Me.cmdRollback)
+        Me.ClientSize = New System.Drawing.Size(895, 534)
         Me.Controls.Add(Me.optFilter)
-        Me.Controls.Add(Me.cmdSave)
+        Me.Controls.Add(Me.optFull)
+        Me.Controls.Add(Me.cmdPrint)
         Me.Controls.Add(Me.gridView)
+        Me.Controls.Add(Me.cmdRollback)
         Me.Controls.Add(Me.cmdLoad)
+        Me.Controls.Add(Me.cmdSave)
         Me.Name = "Start"
         Me.Text = "Start"
         CType(Me.gridView, System.ComponentModel.ISupportInitialize).EndInit()
