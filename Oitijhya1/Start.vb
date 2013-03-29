@@ -105,7 +105,7 @@ Public Class Start
 
             tableName = "Members"
         End Try
-        
+
         Return tableName
         If (flag = True) Then
             connection.Close()
@@ -155,13 +155,13 @@ Public Class Start
         Dim colName As String = Nothing
         For Each dc As DataColumn In table.Columns
             dsize = 255
-
+            colName = trimString(dc.Caption)
             If (dc.DataType.ToString() = "System.Double") Then
                 dtype = " INTEGER"
-                createStr = createStr & "[" & dc.Caption & "] " & dtype
+                createStr = createStr & "[" & colName & "] " & dtype
             ElseIf (dc.DataType.ToString() = "System.String" Or dc.DataType.ToString() = "System.DateTime") Then
                 dtype = " TEXT"
-                createStr = createStr & "[" & dc.Caption & "] " & " " & dtype & "(" & dsize.ToString() & ")"
+                createStr = createStr & "[" & colName & "] " & " " & dtype & "(" & dsize.ToString() & ")"
             End If
 
             If (dc.Caption = table.Columns(0).Caption) Then
@@ -169,9 +169,17 @@ Public Class Start
             End If
             createStr = createStr & ","
         Next
-        createStr = createStr & "Primary Key (" & table.Columns(0).Caption & ")"
+        colName = trimString(table.Columns(0).Caption)
+        createStr = createStr & "Primary Key ([" & colName & "])"
         createStr = createStr & ")"
         Return createStr
+    End Function
+    Private Function trimString(ByRef str As String) As String
+        str = str.Replace(".", "")
+        str = str.Replace("#", "")
+        str = str.Replace(" ", "")
+        str = str.Trim
+        Return str
     End Function
     Private Sub updateDatabase()
         Dim fileDg As New OpenFileDialog
@@ -181,6 +189,8 @@ Public Class Start
         Dim dest As String = System.IO.Directory.GetCurrentDirectory
         If System.IO.File.Exists(source) Then
             If (System.IO.Path.GetExtension(source) = ".xls") Then
+                My.Computer.FileSystem.CopyFile(dest & "\dBase.accdb", dest & "\rollback.accdb", FileIO.UIOption.AllDialogs, _
+                    FileIO.UICancelOption.DoNothing)
                 Dim tempTable = New DataTable
                 Dim err As String = Nothing
                 tempTable = GetExcelData(source, err, "Sheet1")
@@ -209,23 +219,23 @@ Public Class Start
                     Try
                         updAdaptor.Update(gridDataTable)
                     Catch ex As Exception
-                        'MsgBox("Error at GridDataTable Row count=" & gridDataTable.Rows.Count.ToString())
                     End Try
                 Next
-
                 conn.Close()
-            ElseIf System.IO.File.Exists(dest & "\dBase.accdb") Then
-                My.Computer.FileSystem.CopyFile(dest & "\dBase.accdb", dest & "\rollback.accdb", FileIO.UIOption.AllDialogs, _
-                FileIO.UICancelOption.DoNothing)
-                My.Computer.FileSystem.CopyFile(source, dest & "\dBase.accdb", FileIO.UIOption.OnlyErrorDialogs, _
-                FileIO.UICancelOption.DoNothing)
             Else
-                My.Computer.FileSystem.CopyFile(source, dest & "\dBase.accdb", FileIO.UIOption.AllDialogs, _
-                FileIO.UICancelOption.DoNothing)
-                My.Computer.FileSystem.CopyFile(dest & "\dBase.accdb", dest & "\rollback.accdb", FileIO.UIOption.AllDialogs, _
-               FileIO.UICancelOption.DoNothing)
+                If System.IO.File.Exists(dest & "\dBase.accdb") Then
+                    My.Computer.FileSystem.CopyFile(dest & "\dBase.accdb", dest & "\rollback.accdb", FileIO.UIOption.AllDialogs, _
+                    FileIO.UICancelOption.DoNothing)
+                    My.Computer.FileSystem.CopyFile(source, dest & "\dBase.accdb", FileIO.UIOption.OnlyErrorDialogs, _
+                    FileIO.UICancelOption.DoNothing)
+                Else
+                    My.Computer.FileSystem.CopyFile(source, dest & "\dBase.accdb", FileIO.UIOption.AllDialogs, _
+                    FileIO.UICancelOption.DoNothing)
+                    My.Computer.FileSystem.CopyFile(dest & "\dBase.accdb", dest & "\rollback.accdb", FileIO.UIOption.AllDialogs, _
+                   FileIO.UICancelOption.DoNothing)
+                End If
+                'MsgBox("Update successful")
             End If
-            'MsgBox("Update successful")
         End If
     End Sub
     Private Sub dbRollback()
