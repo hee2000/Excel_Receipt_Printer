@@ -30,13 +30,13 @@ Partial Class Start
         Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.InsertBelowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.SetFilterCriteriaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ModifyToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmdLoad = New System.Windows.Forms.Button()
         Me.cmdRollback = New System.Windows.Forms.Button()
         Me.optFilter = New System.Windows.Forms.RadioButton()
         Me.optFull = New System.Windows.Forms.RadioButton()
         Me.cmdSave = New System.Windows.Forms.Button()
         Me.cmdPrint = New System.Windows.Forms.Button()
+        Me.PrintSelectedToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         CType(Me.gridView, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GridRCMenu.SuspendLayout()
         Me.SuspendLayout()
@@ -69,9 +69,9 @@ Partial Class Start
         '
         'GridRCMenu
         '
-        Me.GridRCMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DeleteToolStripMenuItem, Me.InsertBelowToolStripMenuItem, Me.SetFilterCriteriaToolStripMenuItem, Me.ModifyToolStripMenuItem})
+        Me.GridRCMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DeleteToolStripMenuItem, Me.InsertBelowToolStripMenuItem, Me.SetFilterCriteriaToolStripMenuItem, Me.PrintSelectedToolStripMenuItem})
         Me.GridRCMenu.Name = "GridRCMenu"
-        Me.GridRCMenu.Size = New System.Drawing.Size(167, 92)
+        Me.GridRCMenu.Size = New System.Drawing.Size(167, 114)
         '
         'DeleteToolStripMenuItem
         '
@@ -90,12 +90,6 @@ Partial Class Start
         Me.SetFilterCriteriaToolStripMenuItem.Name = "SetFilterCriteriaToolStripMenuItem"
         Me.SetFilterCriteriaToolStripMenuItem.Size = New System.Drawing.Size(166, 22)
         Me.SetFilterCriteriaToolStripMenuItem.Text = "Filter Similar Data"
-        '
-        'ModifyToolStripMenuItem
-        '
-        Me.ModifyToolStripMenuItem.Name = "ModifyToolStripMenuItem"
-        Me.ModifyToolStripMenuItem.Size = New System.Drawing.Size(166, 22)
-        Me.ModifyToolStripMenuItem.Text = "Modify"
         '
         'cmdLoad
         '
@@ -156,6 +150,12 @@ Partial Class Start
         Me.cmdPrint.Text = "Print"
         Me.cmdPrint.UseVisualStyleBackColor = True
         '
+        'PrintSelectedToolStripMenuItem
+        '
+        Me.PrintSelectedToolStripMenuItem.Name = "PrintSelectedToolStripMenuItem"
+        Me.PrintSelectedToolStripMenuItem.Size = New System.Drawing.Size(166, 22)
+        Me.PrintSelectedToolStripMenuItem.Text = "Print Selected"
+        '
         'Start
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -183,9 +183,9 @@ Partial Class Start
     Friend WithEvents DeleteToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents InsertBelowToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents SetFilterCriteriaToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ModifyToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents optFilter As System.Windows.Forms.RadioButton
     Friend WithEvents optFull As System.Windows.Forms.RadioButton
     Friend WithEvents cmdSave As System.Windows.Forms.Button
     Friend WithEvents cmdPrint As System.Windows.Forms.Button
+    Friend WithEvents PrintSelectedToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class

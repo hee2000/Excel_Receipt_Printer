@@ -23,7 +23,7 @@ Partial Class ReportViewer
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.CrystalReportViewer1 = New CrystalDecisions.Windows.Forms.CrystalReportViewer()
-        Me.oitijhya1 = New Global.Oitijhya.oitijhya()
+        Me.oitijhya = New Global.Oitijhya.oitijhya()
         Me.SuspendLayout()
         '
         'CrystalReportViewer1
@@ -34,15 +34,15 @@ Partial Class ReportViewer
         Me.CrystalReportViewer1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.CrystalReportViewer1.Location = New System.Drawing.Point(0, 0)
         Me.CrystalReportViewer1.Name = "CrystalReportViewer1"
-        Me.CrystalReportViewer1.ReportSource = Me.oitijhya1
-        Me.CrystalReportViewer1.Size = New System.Drawing.Size(593, 389)
+        Me.CrystalReportViewer1.ReportSource = Me.oitijhya
+        Me.CrystalReportViewer1.Size = New System.Drawing.Size(741, 439)
         Me.CrystalReportViewer1.TabIndex = 0
         '
         'ReportViewer
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(593, 389)
+        Me.ClientSize = New System.Drawing.Size(741, 439)
         Me.Controls.Add(Me.CrystalReportViewer1)
         Me.Name = "ReportViewer"
         Me.Text = "ReportViewer"
@@ -50,5 +50,5 @@ Partial Class ReportViewer
 
     End Sub
     Friend WithEvents CrystalReportViewer1 As CrystalDecisions.Windows.Forms.CrystalReportViewer
-    Friend WithEvents oitijhya1 As Global.Oitijhya.oitijhya
+    Friend WithEvents oitijhya As Global.Oitijhya.oitijhya
 End Class

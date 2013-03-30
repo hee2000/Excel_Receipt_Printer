@@ -116,20 +116,16 @@ Public Class Start
 
         Try
             conn.Open()
-            'MsgBox("Connection established!")
         Catch
             MsgBox("Database not found. Locate database.", MsgBoxStyle.Exclamation)
             updateDatabase()
             conn.Open()
-            'MsgBox("Connection established!")
         End Try
-        'small code snippet to get table names
         tableName = getTableName(conn)
         'end snippet
         'makes the data adaptor
         dAdaptor = New OleDb.OleDbDataAdapter("Select * From " & tableName & "", conn)
         Me.Text = tableName
-        'dAdaptor.SelectCommand = New OleDbCommand("Select * From " & tableName & "", conn)
         'friendly names
         'Dim custom As DataTableMapping = dAdaptor.TableMappings.Add(""& tableName &"", "Oitijhya Member List")
         'custom.ColumnMappings.Add("SNo", "Serial No.")
@@ -138,13 +134,9 @@ Public Class Start
         dAdaptor.Fill(gridDataTable)
         gridView.DataSource = gridDataTable
         dAdaptorCB = New OleDb.OleDbCommandBuilder(dAdaptor)
-        'dAdaptor.SelectCommand.CommandText = "Select * From " & tableName & ""
-        'dAdaptor.InsertCommand = dAdaptorCB.GetInsertCommand()
-        'dAdaptor.DeleteCommand = dAdaptorCB.GetDeleteCommand()
         dAdaptor.UpdateCommand = dAdaptorCB.GetUpdateCommand()
         dAdaptor.InsertCommand = makeInsCommand(gridDataTable)
         dAdaptor.DeleteCommand = makeDelCommand(gridDataTable)
-        'dAdaptor.UpdateCommand = makeUpdCommand(gridDataTable)
         conn.Close()
     End Sub
     Private Function createTableQuery(ByRef tableName As String, ByRef table As DataTable) As String
@@ -194,10 +186,6 @@ Public Class Start
                 Dim tempTable = New DataTable
                 Dim err As String = Nothing
                 tempTable = GetExcelData(source, err, "Sheet1")
-                'MsgBox(tempTable.Rows.Count.ToString())
-                'My.Computer.FileSystem.DeleteFile(dest & "\dBase.accdb", FileIO.UIOption.AllDialogs, FileIO.RecycleOption.DeletePermanently, FileIO.UICancelOption.DoNothing)
-                'creating new table in .accdb file and populating it
-                'Dim OLEConnection As New OleDb.OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" & dest & "\dBase.accdb" & ";Persist Security Info=True")
                 conn.Open()
                 Dim createCommand As New OleDb.OleDbCommand("", conn)
                 Dim dropCommand As New OleDb.OleDbCommand("", conn)
@@ -254,7 +242,7 @@ Public Class Start
 
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdRollback.Click
         dbRollback()
-        MsgBox("Hurray! Database rolled back.")
+        'MsgBox("Hurray! Database rolled back.")
         initialiseAdaptor()
     End Sub
 
@@ -354,5 +342,10 @@ Public Class Start
 
     Private Sub cmdPrint_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdPrint.Click
         printDialog.Show()
+    End Sub
+
+    Private Sub PrintSelectedToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PrintSelectedToolStripMenuItem.Click
+        ReportViewer.Show()
+
     End Sub
 End Class
