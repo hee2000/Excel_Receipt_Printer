@@ -28,15 +28,15 @@ Partial Class Start
         Me.gridView = New System.Windows.Forms.DataGridView()
         Me.GridRCMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.InsertBelowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.SetFilterCriteriaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.PrintSelectedToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmdLoad = New System.Windows.Forms.Button()
         Me.cmdRollback = New System.Windows.Forms.Button()
         Me.optFilter = New System.Windows.Forms.RadioButton()
         Me.optFull = New System.Windows.Forms.RadioButton()
         Me.cmdSave = New System.Windows.Forms.Button()
         Me.cmdPrint = New System.Windows.Forms.Button()
-        Me.PrintSelectedToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmdInfo = New System.Windows.Forms.Button()
         CType(Me.gridView, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GridRCMenu.SuspendLayout()
         Me.SuspendLayout()
@@ -44,6 +44,7 @@ Partial Class Start
         'gridView
         '
         Me.gridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
+        Me.gridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None
         DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
         DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -62,112 +63,119 @@ Partial Class Start
         DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
         DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
         Me.gridView.DefaultCellStyle = DataGridViewCellStyle2
-        Me.gridView.Location = New System.Drawing.Point(12, 12)
+        Me.gridView.Location = New System.Drawing.Point(-1, 88)
         Me.gridView.Name = "gridView"
-        Me.gridView.Size = New System.Drawing.Size(871, 469)
+        Me.gridView.Size = New System.Drawing.Size(776, 476)
         Me.gridView.TabIndex = 0
         '
         'GridRCMenu
         '
-        Me.GridRCMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DeleteToolStripMenuItem, Me.InsertBelowToolStripMenuItem, Me.SetFilterCriteriaToolStripMenuItem, Me.PrintSelectedToolStripMenuItem})
+        Me.GridRCMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PrintSelectedToolStripMenuItem, Me.SetFilterCriteriaToolStripMenuItem, Me.DeleteToolStripMenuItem})
         Me.GridRCMenu.Name = "GridRCMenu"
-        Me.GridRCMenu.Size = New System.Drawing.Size(167, 114)
+        Me.GridRCMenu.Size = New System.Drawing.Size(147, 70)
         '
         'DeleteToolStripMenuItem
         '
         Me.DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem"
-        Me.DeleteToolStripMenuItem.Size = New System.Drawing.Size(166, 22)
+        Me.DeleteToolStripMenuItem.Size = New System.Drawing.Size(146, 22)
         Me.DeleteToolStripMenuItem.Text = "Delete"
-        '
-        'InsertBelowToolStripMenuItem
-        '
-        Me.InsertBelowToolStripMenuItem.Name = "InsertBelowToolStripMenuItem"
-        Me.InsertBelowToolStripMenuItem.Size = New System.Drawing.Size(166, 22)
-        Me.InsertBelowToolStripMenuItem.Text = "Insert Below"
         '
         'SetFilterCriteriaToolStripMenuItem
         '
         Me.SetFilterCriteriaToolStripMenuItem.Name = "SetFilterCriteriaToolStripMenuItem"
-        Me.SetFilterCriteriaToolStripMenuItem.Size = New System.Drawing.Size(166, 22)
-        Me.SetFilterCriteriaToolStripMenuItem.Text = "Filter Similar Data"
+        Me.SetFilterCriteriaToolStripMenuItem.Size = New System.Drawing.Size(146, 22)
+        Me.SetFilterCriteriaToolStripMenuItem.Text = "Filter"
+        '
+        'PrintSelectedToolStripMenuItem
+        '
+        Me.PrintSelectedToolStripMenuItem.Name = "PrintSelectedToolStripMenuItem"
+        Me.PrintSelectedToolStripMenuItem.Size = New System.Drawing.Size(146, 22)
+        Me.PrintSelectedToolStripMenuItem.Text = "Print Selected"
         '
         'cmdLoad
         '
-        Me.cmdLoad.Location = New System.Drawing.Point(513, 493)
+        Me.cmdLoad.Location = New System.Drawing.Point(12, 7)
         Me.cmdLoad.Name = "cmdLoad"
-        Me.cmdLoad.Size = New System.Drawing.Size(125, 29)
+        Me.cmdLoad.Size = New System.Drawing.Size(111, 75)
         Me.cmdLoad.TabIndex = 1
-        Me.cmdLoad.Text = "Load New"
         Me.cmdLoad.UseVisualStyleBackColor = True
         '
         'cmdRollback
         '
-        Me.cmdRollback.Location = New System.Drawing.Point(765, 493)
+        Me.cmdRollback.Location = New System.Drawing.Point(242, 7)
         Me.cmdRollback.Name = "cmdRollback"
-        Me.cmdRollback.Size = New System.Drawing.Size(118, 29)
+        Me.cmdRollback.Size = New System.Drawing.Size(101, 75)
         Me.cmdRollback.TabIndex = 2
-        Me.cmdRollback.Text = "Rollback"
         Me.cmdRollback.UseVisualStyleBackColor = True
         '
         'optFilter
         '
         Me.optFilter.AutoSize = True
-        Me.optFilter.Location = New System.Drawing.Point(12, 487)
+        Me.optFilter.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.optFilter.Location = New System.Drawing.Point(566, 58)
         Me.optFilter.Name = "optFilter"
-        Me.optFilter.Size = New System.Drawing.Size(97, 17)
+        Me.optFilter.Size = New System.Drawing.Size(62, 24)
         Me.optFilter.TabIndex = 3
-        Me.optFilter.Text = "Filtered Results"
+        Me.optFilter.Text = "Filter"
         Me.optFilter.UseVisualStyleBackColor = True
+        Me.optFilter.Visible = False
         '
         'optFull
         '
         Me.optFull.AutoSize = True
         Me.optFull.Checked = True
-        Me.optFull.Location = New System.Drawing.Point(12, 504)
+        Me.optFull.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.optFull.Location = New System.Drawing.Point(566, 28)
         Me.optFull.Name = "optFull"
-        Me.optFull.Size = New System.Drawing.Size(71, 17)
+        Me.optFull.Size = New System.Drawing.Size(66, 24)
         Me.optFull.TabIndex = 4
         Me.optFull.TabStop = True
-        Me.optFull.Text = "Full Table"
+        Me.optFull.Text = "Table"
         Me.optFull.UseVisualStyleBackColor = True
+        Me.optFull.Visible = False
         '
         'cmdSave
         '
-        Me.cmdSave.Location = New System.Drawing.Point(644, 493)
+        Me.cmdSave.Location = New System.Drawing.Point(129, 7)
         Me.cmdSave.Name = "cmdSave"
-        Me.cmdSave.Size = New System.Drawing.Size(115, 29)
+        Me.cmdSave.Size = New System.Drawing.Size(107, 75)
         Me.cmdSave.TabIndex = 5
-        Me.cmdSave.Text = "Save Changes"
         Me.cmdSave.UseVisualStyleBackColor = True
         '
         'cmdPrint
         '
         Me.cmdPrint.Enabled = False
-        Me.cmdPrint.Location = New System.Drawing.Point(395, 493)
+        Me.cmdPrint.Location = New System.Drawing.Point(550, 245)
         Me.cmdPrint.Name = "cmdPrint"
         Me.cmdPrint.Size = New System.Drawing.Size(112, 29)
         Me.cmdPrint.TabIndex = 6
         Me.cmdPrint.Text = "Print"
         Me.cmdPrint.UseVisualStyleBackColor = True
+        Me.cmdPrint.Visible = False
         '
-        'PrintSelectedToolStripMenuItem
+        'cmdInfo
         '
-        Me.PrintSelectedToolStripMenuItem.Name = "PrintSelectedToolStripMenuItem"
-        Me.PrintSelectedToolStripMenuItem.Size = New System.Drawing.Size(166, 22)
-        Me.PrintSelectedToolStripMenuItem.Text = "Print Selected"
+        Me.cmdInfo.Location = New System.Drawing.Point(662, 7)
+        Me.cmdInfo.Name = "cmdInfo"
+        Me.cmdInfo.Size = New System.Drawing.Size(101, 75)
+        Me.cmdInfo.TabIndex = 7
+        Me.cmdInfo.UseVisualStyleBackColor = True
         '
         'Start
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(895, 534)
-        Me.Controls.Add(Me.optFilter)
-        Me.Controls.Add(Me.optFull)
-        Me.Controls.Add(Me.cmdPrint)
+        Me.ClientSize = New System.Drawing.Size(775, 564)
         Me.Controls.Add(Me.gridView)
-        Me.Controls.Add(Me.cmdRollback)
         Me.Controls.Add(Me.cmdLoad)
+        Me.Controls.Add(Me.cmdInfo)
+        Me.Controls.Add(Me.cmdPrint)
         Me.Controls.Add(Me.cmdSave)
+        Me.Controls.Add(Me.cmdRollback)
+        Me.Controls.Add(Me.optFull)
+        Me.Controls.Add(Me.optFilter)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.MaximizeBox = False
         Me.Name = "Start"
         Me.Text = "Start"
         CType(Me.gridView, System.ComponentModel.ISupportInitialize).EndInit()
@@ -181,11 +189,11 @@ Partial Class Start
     Friend WithEvents cmdRollback As System.Windows.Forms.Button
     Friend WithEvents GridRCMenu As System.Windows.Forms.ContextMenuStrip
     Friend WithEvents DeleteToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents InsertBelowToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents SetFilterCriteriaToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents optFilter As System.Windows.Forms.RadioButton
     Friend WithEvents optFull As System.Windows.Forms.RadioButton
     Friend WithEvents cmdSave As System.Windows.Forms.Button
     Friend WithEvents cmdPrint As System.Windows.Forms.Button
     Friend WithEvents PrintSelectedToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmdInfo As System.Windows.Forms.Button
 End Class

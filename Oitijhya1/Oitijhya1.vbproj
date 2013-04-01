@@ -109,7 +109,18 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AboutBox1.Designer.vb">
+      <DependentUpon>AboutBox1.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AboutBox1.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Connection.vb" />
+    <Compile Include="reportDset.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>reportDset.xsd</DependentUpon>
+    </Compile>
     <Compile Include="oitijhya.vb">
       <DependentUpon>oitijhya.rpt</DependentUpon>
       <SubType>Component</SubType>
@@ -157,6 +168,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="AboutBox1.resx">
+      <DependentUpon>AboutBox1.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="oitijhya.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>oitijhya.vb</LastGenOutput>
@@ -182,6 +196,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="reportDset.xsc">
+      <DependentUpon>reportDset.xsd</DependentUpon>
+    </None>
+    <None Include="reportDset.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>reportDset.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="reportDset.xss">
+      <DependentUpon>reportDset.xsd</DependentUpon>
+    </None>
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>

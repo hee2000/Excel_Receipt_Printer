@@ -28,3 +28,4 @@ D:\Workspace\prog\VB 08\Oitijhya1\Oitijhya1\obj\Debug\Oitijhya.printDialog.resou
 D:\Workspace\prog\VB 08\Oitijhya1\Oitijhya1\obj\Debug\GenerateResource.read.1.tlog
 D:\Workspace\prog\VB 08\Oitijhya1\Oitijhya1\obj\Debug\GenerateResource.write.1.tlog
 D:\Workspace\prog\VB 08\Oitijhya1\Oitijhya1\obj\Debug\Oitijhya.ReportViewer.resources
+D:\Workspace\prog\VB 08\Oitijhya1\Oitijhya1\obj\Debug\Oitijhya.AboutBox1.resources

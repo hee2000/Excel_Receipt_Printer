@@ -3,6 +3,10 @@ Imports System.Data.Common
 Public Class Start
 
     Private Sub Start_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        cmdLoad.Image = Image.FromFile(Application.StartupPath & "\Images\new.png")
+        cmdInfo.Image = Image.FromFile(Application.StartupPath & "\Images\info.png")
+        cmdSave.Image = Image.FromFile(Application.StartupPath & "\Images\save.png")
+        cmdRollback.Image = Image.FromFile(Application.StartupPath & "\Images\undo.png")
         'TODO: This line of code loads data into the 'List1DataSet."& tableName &"' table. You can move, or remove it, as needed.
         initialiseAdaptor()
         'grid properties
@@ -257,6 +261,8 @@ Public Class Start
     End Sub
 
     Private Sub SetFilterCriteriaToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SetFilterCriteriaToolStripMenuItem.Click
+        optFilter.Visible = True
+        optFull.Visible = True
         SelectFilter.Show()
         Me.Enabled = False
     End Sub
@@ -345,7 +351,26 @@ Public Class Start
     End Sub
 
     Private Sub PrintSelectedToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PrintSelectedToolStripMenuItem.Click
+        'reportDset.reportTableDataTable = gridDataTable
+        reportTable = gridDataTable.Clone
+        Dim selectrow As DataRow
+        If (gridView.SelectedRows.Count > 0) Then
+            For Each temprow As DataGridViewRow In gridView.SelectedRows
+                selectrow = reportTable.NewRow()
+                For i = 0 To reportTable.Columns.Count - 1
+                    selectrow(i) = temprow.Cells(i).Value
+                Next
+                reportTable.Rows.Add(selectrow)
+            Next
+        Else
+            MsgBox("Please select rows to be printed")
+        End If
+
         ReportViewer.Show()
 
+    End Sub
+
+    Private Sub cmdInfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdInfo.Click
+        AboutBox1.Show()
     End Sub
 End Class

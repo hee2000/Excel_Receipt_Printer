@@ -220,24 +220,24 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Oitijhya1.exe" size="70656">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Oitijhya1.exe" size="106496">
       <assemblyIdentity name="Oitijhya1" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>CloKDFc/gyYRLRL1FguQBecArcE=</dsig:DigestValue>
+        <dsig:DigestValue>AWa06L070xL4A4Z5Q/lIfIfOcpo=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="Oitijhya1.exe.config" size="2164">
+  <file name="Oitijhya1.exe.config" size="2224">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>3ueLZBKq0alMBngBZQX2A+Z7Oj0=</dsig:DigestValue>
+      <dsig:DigestValue>YoAr5lHlRRsShpBXzREJGTu9oAE=</dsig:DigestValue>
     </hash>
   </file>
 </asmv1:assembly>

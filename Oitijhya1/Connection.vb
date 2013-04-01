@@ -6,4 +6,5 @@
     Public dAdaptor As New OleDb.OleDbDataAdapter
     Public filteredData As DataTable  'filtered data
     Public dAdaptorCB As OleDb.OleDbCommandBuilder
+    Public reportTable As New DataTable
 End Module
