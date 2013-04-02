@@ -23,8 +23,8 @@ Partial Class Start
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.gridView = New System.Windows.Forms.DataGridView()
         Me.GridRCMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -45,24 +45,24 @@ Partial Class Start
         '
         Me.gridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
         Me.gridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None
-        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.gridView.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.gridView.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle3
         Me.gridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.gridView.ContextMenuStrip = Me.GridRCMenu
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.gridView.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.gridView.DefaultCellStyle = DataGridViewCellStyle4
         Me.gridView.Location = New System.Drawing.Point(-1, 88)
         Me.gridView.Name = "gridView"
         Me.gridView.Size = New System.Drawing.Size(776, 476)
@@ -94,17 +94,19 @@ Partial Class Start
         '
         'cmdLoad
         '
+        Me.cmdLoad.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.cmdLoad.Location = New System.Drawing.Point(12, 7)
         Me.cmdLoad.Name = "cmdLoad"
-        Me.cmdLoad.Size = New System.Drawing.Size(111, 75)
+        Me.cmdLoad.Size = New System.Drawing.Size(72, 68)
         Me.cmdLoad.TabIndex = 1
         Me.cmdLoad.UseVisualStyleBackColor = True
         '
         'cmdRollback
         '
-        Me.cmdRollback.Location = New System.Drawing.Point(242, 7)
+        Me.cmdRollback.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.cmdRollback.Location = New System.Drawing.Point(193, 7)
         Me.cmdRollback.Name = "cmdRollback"
-        Me.cmdRollback.Size = New System.Drawing.Size(101, 75)
+        Me.cmdRollback.Size = New System.Drawing.Size(68, 68)
         Me.cmdRollback.TabIndex = 2
         Me.cmdRollback.UseVisualStyleBackColor = True
         '
@@ -112,7 +114,7 @@ Partial Class Start
         '
         Me.optFilter.AutoSize = True
         Me.optFilter.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.optFilter.Location = New System.Drawing.Point(566, 58)
+        Me.optFilter.Location = New System.Drawing.Point(600, 46)
         Me.optFilter.Name = "optFilter"
         Me.optFilter.Size = New System.Drawing.Size(62, 24)
         Me.optFilter.TabIndex = 3
@@ -125,7 +127,7 @@ Partial Class Start
         Me.optFull.AutoSize = True
         Me.optFull.Checked = True
         Me.optFull.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.optFull.Location = New System.Drawing.Point(566, 28)
+        Me.optFull.Location = New System.Drawing.Point(600, 16)
         Me.optFull.Name = "optFull"
         Me.optFull.Size = New System.Drawing.Size(66, 24)
         Me.optFull.TabIndex = 4
@@ -136,9 +138,10 @@ Partial Class Start
         '
         'cmdSave
         '
-        Me.cmdSave.Location = New System.Drawing.Point(129, 7)
+        Me.cmdSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.cmdSave.Location = New System.Drawing.Point(102, 7)
         Me.cmdSave.Name = "cmdSave"
-        Me.cmdSave.Size = New System.Drawing.Size(107, 75)
+        Me.cmdSave.Size = New System.Drawing.Size(69, 68)
         Me.cmdSave.TabIndex = 5
         Me.cmdSave.UseVisualStyleBackColor = True
         '
@@ -155,9 +158,10 @@ Partial Class Start
         '
         'cmdInfo
         '
-        Me.cmdInfo.Location = New System.Drawing.Point(662, 7)
+        Me.cmdInfo.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.cmdInfo.Location = New System.Drawing.Point(686, 7)
         Me.cmdInfo.Name = "cmdInfo"
-        Me.cmdInfo.Size = New System.Drawing.Size(101, 75)
+        Me.cmdInfo.Size = New System.Drawing.Size(68, 68)
         Me.cmdInfo.TabIndex = 7
         Me.cmdInfo.UseVisualStyleBackColor = True
         '
@@ -165,15 +169,16 @@ Partial Class Start
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(775, 564)
         Me.Controls.Add(Me.gridView)
         Me.Controls.Add(Me.cmdLoad)
         Me.Controls.Add(Me.cmdInfo)
         Me.Controls.Add(Me.cmdPrint)
+        Me.Controls.Add(Me.optFilter)
+        Me.Controls.Add(Me.optFull)
         Me.Controls.Add(Me.cmdSave)
         Me.Controls.Add(Me.cmdRollback)
-        Me.Controls.Add(Me.optFull)
-        Me.Controls.Add(Me.optFilter)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.MaximizeBox = False
         Me.Name = "Start"

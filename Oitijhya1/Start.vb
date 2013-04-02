@@ -3,6 +3,7 @@ Imports System.Data.Common
 Public Class Start
 
     Private Sub Start_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        'SplashScreen.Show()
         cmdLoad.Image = Image.FromFile(Application.StartupPath & "\Images\new.png")
         cmdInfo.Image = Image.FromFile(Application.StartupPath & "\Images\info.png")
         cmdSave.Image = Image.FromFile(Application.StartupPath & "\Images\save.png")
@@ -14,6 +15,9 @@ Public Class Start
         gridView.MultiSelect = True
         gridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect
         optFilter.Enabled = False
+        'Threading.Thread.Sleep(1000)
+        'SplashScreen.Close()
+        'Me.Show()
     End Sub
     Public Function GetExcelData(ByVal ASpreadSheet As String, ByRef AnError As String, ByVal ASheetName As String) As DataTable
 
