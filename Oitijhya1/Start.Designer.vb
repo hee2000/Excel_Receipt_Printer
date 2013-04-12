@@ -23,13 +23,14 @@ Partial Class Start
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.gridView = New System.Windows.Forms.DataGridView()
         Me.GridRCMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.SetFilterCriteriaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.PrintSelectedToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SetFilterCriteriaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmdLoad = New System.Windows.Forms.Button()
         Me.cmdRollback = New System.Windows.Forms.Button()
         Me.optFilter = New System.Windows.Forms.RadioButton()
@@ -37,6 +38,7 @@ Partial Class Start
         Me.cmdSave = New System.Windows.Forms.Button()
         Me.cmdPrint = New System.Windows.Forms.Button()
         Me.cmdInfo = New System.Windows.Forms.Button()
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         CType(Me.gridView, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GridRCMenu.SuspendLayout()
         Me.SuspendLayout()
@@ -45,6 +47,26 @@ Partial Class Start
         '
         Me.gridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
         Me.gridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.gridView.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
+        Me.gridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.gridView.ContextMenuStrip = Me.GridRCMenu
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.gridView.DefaultCellStyle = DataGridViewCellStyle2
+        Me.gridView.Location = New System.Drawing.Point(-1, 88)
+        Me.gridView.Name = "gridView"
         DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control
         DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -52,19 +74,7 @@ Partial Class Start
         DataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight
         DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
         DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.gridView.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle3
-        Me.gridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.gridView.ContextMenuStrip = Me.GridRCMenu
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.gridView.DefaultCellStyle = DataGridViewCellStyle4
-        Me.gridView.Location = New System.Drawing.Point(-1, 88)
-        Me.gridView.Name = "gridView"
+        Me.gridView.RowHeadersDefaultCellStyle = DataGridViewCellStyle3
         Me.gridView.Size = New System.Drawing.Size(776, 476)
         Me.gridView.TabIndex = 0
         '
@@ -74,11 +84,11 @@ Partial Class Start
         Me.GridRCMenu.Name = "GridRCMenu"
         Me.GridRCMenu.Size = New System.Drawing.Size(147, 70)
         '
-        'DeleteToolStripMenuItem
+        'PrintSelectedToolStripMenuItem
         '
-        Me.DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem"
-        Me.DeleteToolStripMenuItem.Size = New System.Drawing.Size(146, 22)
-        Me.DeleteToolStripMenuItem.Text = "Delete"
+        Me.PrintSelectedToolStripMenuItem.Name = "PrintSelectedToolStripMenuItem"
+        Me.PrintSelectedToolStripMenuItem.Size = New System.Drawing.Size(146, 22)
+        Me.PrintSelectedToolStripMenuItem.Text = "Print Selected"
         '
         'SetFilterCriteriaToolStripMenuItem
         '
@@ -86,28 +96,28 @@ Partial Class Start
         Me.SetFilterCriteriaToolStripMenuItem.Size = New System.Drawing.Size(146, 22)
         Me.SetFilterCriteriaToolStripMenuItem.Text = "Filter"
         '
-        'PrintSelectedToolStripMenuItem
+        'DeleteToolStripMenuItem
         '
-        Me.PrintSelectedToolStripMenuItem.Name = "PrintSelectedToolStripMenuItem"
-        Me.PrintSelectedToolStripMenuItem.Size = New System.Drawing.Size(146, 22)
-        Me.PrintSelectedToolStripMenuItem.Text = "Print Selected"
+        Me.DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem"
+        Me.DeleteToolStripMenuItem.Size = New System.Drawing.Size(146, 22)
+        Me.DeleteToolStripMenuItem.Text = "Delete"
         '
         'cmdLoad
         '
-        Me.cmdLoad.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.cmdLoad.Location = New System.Drawing.Point(12, 7)
         Me.cmdLoad.Name = "cmdLoad"
         Me.cmdLoad.Size = New System.Drawing.Size(72, 68)
         Me.cmdLoad.TabIndex = 1
+        Me.ToolTip1.SetToolTip(Me.cmdLoad, "Load New")
         Me.cmdLoad.UseVisualStyleBackColor = True
         '
         'cmdRollback
         '
-        Me.cmdRollback.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.cmdRollback.Location = New System.Drawing.Point(193, 7)
         Me.cmdRollback.Name = "cmdRollback"
         Me.cmdRollback.Size = New System.Drawing.Size(68, 68)
         Me.cmdRollback.TabIndex = 2
+        Me.ToolTip1.SetToolTip(Me.cmdRollback, "Rollback")
         Me.cmdRollback.UseVisualStyleBackColor = True
         '
         'optFilter
@@ -138,11 +148,11 @@ Partial Class Start
         '
         'cmdSave
         '
-        Me.cmdSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.cmdSave.Location = New System.Drawing.Point(102, 7)
         Me.cmdSave.Name = "cmdSave"
         Me.cmdSave.Size = New System.Drawing.Size(69, 68)
         Me.cmdSave.TabIndex = 5
+        Me.ToolTip1.SetToolTip(Me.cmdSave, "Save Changes")
         Me.cmdSave.UseVisualStyleBackColor = True
         '
         'cmdPrint
@@ -158,11 +168,11 @@ Partial Class Start
         '
         'cmdInfo
         '
-        Me.cmdInfo.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.cmdInfo.Location = New System.Drawing.Point(686, 7)
         Me.cmdInfo.Name = "cmdInfo"
         Me.cmdInfo.Size = New System.Drawing.Size(68, 68)
         Me.cmdInfo.TabIndex = 7
+        Me.ToolTip1.SetToolTip(Me.cmdInfo, "Information")
         Me.cmdInfo.UseVisualStyleBackColor = True
         '
         'Start
@@ -201,4 +211,5 @@ Partial Class Start
     Friend WithEvents cmdPrint As System.Windows.Forms.Button
     Friend WithEvents PrintSelectedToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmdInfo As System.Windows.Forms.Button
+    Friend WithEvents ToolTip1 As System.Windows.Forms.ToolTip
 End Class

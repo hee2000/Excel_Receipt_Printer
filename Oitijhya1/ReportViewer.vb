@@ -17,6 +17,10 @@ Public Class ReportViewer
         cr.Database.Tables(0).SetDataSource(reportTable)
         ' Load Report to cr viewer
         CrystalReportViewer1.ReportSource = cr
-        CrystalReportViewer1.Refresh()
+        Try
+            CrystalReportViewer1.Refresh()
+        Catch
+            MsgBox("Error. Database inconsistent. Please check all the fields and try again.", MsgBoxStyle.Critical)
+        End Try
     End Sub
 End Class

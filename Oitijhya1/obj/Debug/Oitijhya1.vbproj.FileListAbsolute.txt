@@ -30,3 +30,14 @@ D:\Workspace\prog\VB 08\Oitijhya1\Oitijhya1\obj\Debug\GenerateResource.write.1.t
 D:\Workspace\prog\VB 08\Oitijhya1\Oitijhya1\obj\Debug\Oitijhya.ReportViewer.resources
 D:\Workspace\prog\VB 08\Oitijhya1\Oitijhya1\obj\Debug\Oitijhya.AboutBox1.resources
 D:\Workspace\prog\VB 08\Oitijhya1\Oitijhya1\obj\Debug\Oitijhya.SplashScreen.resources
+D:\Workspace\prog\VB 08\Oitijhya1\Oitijhya1\bin\Debug\bin\Debug\dBase.accdb
+D:\Workspace\prog\VB 08\Oitijhya1\Oitijhya1\bin\Debug\bin\Debug\rollback.accdb
+D:\Workspace\prog\VB 08\Oitijhya1\Oitijhya1\bin\Debug\bin\Debug\Reports\oitijhya.rpt
+D:\Workspace\prog\VB 08\Oitijhya1\Oitijhya1\bin\Debug\bin\Debug\Images\durga.jpg
+D:\Workspace\prog\VB 08\Oitijhya1\Oitijhya1\bin\Debug\bin\Debug\Images\info.png
+D:\Workspace\prog\VB 08\Oitijhya1\Oitijhya1\bin\Debug\bin\Debug\Images\new.png
+D:\Workspace\prog\VB 08\Oitijhya1\Oitijhya1\bin\Debug\bin\Debug\Images\oit.jpg
+D:\Workspace\prog\VB 08\Oitijhya1\Oitijhya1\bin\Debug\bin\Debug\Images\oit1.jpg
+D:\Workspace\prog\VB 08\Oitijhya1\Oitijhya1\bin\Debug\bin\Debug\Images\save.png
+D:\Workspace\prog\VB 08\Oitijhya1\Oitijhya1\bin\Debug\bin\Debug\Images\undo.png
+D:\Workspace\prog\VB 08\Oitijhya1\Oitijhya1\bin\Debug\bin\Debug\Reports\oitijhya.vb

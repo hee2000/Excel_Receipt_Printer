@@ -1,13 +1,14 @@
 ﻿Imports System.Data.OleDb
 Imports System.Data.Common
+'Imports Microsoft.Office.Interop.Excel
 Public Class Start
 
     Private Sub Start_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         'SplashScreen.Show()
-        cmdLoad.Image = Image.FromFile(Application.StartupPath & "\Images\new.png")
-        cmdInfo.Image = Image.FromFile(Application.StartupPath & "\Images\info.png")
-        cmdSave.Image = Image.FromFile(Application.StartupPath & "\Images\save.png")
-        cmdRollback.Image = Image.FromFile(Application.StartupPath & "\Images\undo.png")
+        cmdLoad.Image = Image.FromFile(System.Windows.Forms.Application.StartupPath & "\Images\new.png")
+        cmdInfo.Image = Image.FromFile(System.Windows.Forms.Application.StartupPath & "\Images\info.png")
+        cmdSave.Image = Image.FromFile(System.Windows.Forms.Application.StartupPath & "\Images\save.png")
+        cmdRollback.Image = Image.FromFile(System.Windows.Forms.Application.StartupPath & "\Images\undo.png")
         'TODO: This line of code loads data into the 'List1DataSet."& tableName &"' table. You can move, or remove it, as needed.
         initialiseAdaptor()
         'grid properties
@@ -20,24 +21,30 @@ Public Class Start
         'Me.Show()
     End Sub
     Public Function GetExcelData(ByVal ASpreadSheet As String, ByRef AnError As String, ByVal ASheetName As String) As DataTable
-
-        Dim connString As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" & ASpreadSheet & ";Extended Properties=""Excel 8.0;HDR=Yes;"""
-        Dim conn As OleDbConnection = New OleDbConnection(connString)
-        Dim Dset As New DataTable
-        AnError = ""
-        Try
-            Using conn
-                conn.Open()
-                Dim schemaTable As DataTable = conn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, Nothing)
-                Dim firstSheetName As String = CType(schemaTable.Rows(0).Item("TABLE_NAME"), String)
-                Dim MyCommand As OleDbDataAdapter = New OleDbDataAdapter("select * from [" & ASheetName & "$]", conn)
-                MyCommand.Fill(Dset)
-            End Using
-        Catch ex As Exception
-            AnError = ex.ToString
-            Return Nothing
+        'Dim excelApplication As Microsoft.Office.Interop.Excel.Application = Nothing
+        'excelApplication = New Microsoft.Office.Interop.Excel.Application
+        'Dim excelWorkBook As Microsoft.Office.Interop.Excel.Workbook = Nothing
+        'Dim targetSheet As Microsoft.Office.Interop.Excel.Worksheet = Nothing
+        'excelWorkBook = excelApplication.Workbooks.Open(ASpreadSheet)
+        'targetSheet = excelWorkBook.Sheets(1)
+        'targetSheet.Activate()
+            Dim connString As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" & ASpreadSheet & ";Extended Properties=""Excel 8.0;HDR=Yes;"""
+        Dim conn As OleDb.OleDbConnection = New OleDb.OleDbConnection(connString)
+        Dim Dset As New DataSet
+            AnError = ""
+            Try
+                Using conn
+                    conn.Open()
+                    Dim schemaTable As DataTable = conn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, Nothing)
+                    Dim firstSheetName As String = CType(schemaTable.Rows(0).Item("TABLE_NAME"), String)
+                    Dim MyCommand As OleDbDataAdapter = New OleDbDataAdapter("select * from [" & ASheetName & "$]", conn)
+                    MyCommand.Fill(Dset)
+                End Using
+            Catch ex As Exception
+                AnError = ex.ToString
+                Return Nothing
         End Try
-        Return Dset
+        Return Dset.Tables(0)
     End Function
     Private Function makeDelCommand(ByRef table As DataTable) As OleDb.OleDbCommand
         Dim del As New OleDb.OleDbCommand
@@ -102,7 +109,7 @@ Public Class Start
             connection.Open()
             flag = True
         End If
-        Dim userTables As DataTable = Nothing
+        Dim userTables As DataTable = New DataTable
         Dim restrictions() As String = New String(3) {}
         restrictions(3) = "Table"
         userTables = conn.GetSchema("Tables", restrictions)
@@ -120,8 +127,11 @@ Public Class Start
         End If
     End Function
     Private Sub initialiseAdaptor()
-        conn.ConnectionString = Configuration.ConfigurationManager.ConnectionStrings("OitijhyaDatabase").ConnectionString()
-
+        'conn.ConnectionString = Configuration.ConfigurationManager.ConnectionStrings("OitijhyaDatabase").ConnectionString()
+        Dim cstrBuild As New OleDbConnectionStringBuilder
+        cstrBuild.Provider = "Microsoft.ACE.OLEDB.12.0"
+        cstrBuild.DataSource = System.Windows.Forms.Application.StartupPath & "\dBase.accdb"
+        conn.ConnectionString = cstrBuild.ConnectionString
         Try
             conn.Open()
         Catch
@@ -138,7 +148,7 @@ Public Class Start
         'Dim custom As DataTableMapping = dAdaptor.TableMappings.Add(""& tableName &"", "Oitijhya Member List")
         'custom.ColumnMappings.Add("SNo", "Serial No.")
         'gridDataTable.Clear()
-        gridDataTable = New DataTable()
+        gridDataTable = New DataTable
         dAdaptor.Fill(gridDataTable)
         gridView.DataSource = gridDataTable
         dAdaptorCB = New OleDb.OleDbCommandBuilder(dAdaptor)
@@ -189,9 +199,11 @@ Public Class Start
         Dim dest As String = System.IO.Directory.GetCurrentDirectory
         If System.IO.File.Exists(source) Then
             If (System.IO.Path.GetExtension(source) = ".xls") Then
+                My.Computer.FileSystem.DeleteFile(dest & "\rollback.accdb", FileIO.UIOption.AllDialogs, _
+                    FileIO.UICancelOption.DoNothing)
                 My.Computer.FileSystem.CopyFile(dest & "\dBase.accdb", dest & "\rollback.accdb", FileIO.UIOption.AllDialogs, _
                     FileIO.UICancelOption.DoNothing)
-                Dim tempTable = New DataTable
+                Dim tempTable As New DataTable
                 Dim err As String = Nothing
                 tempTable = GetExcelData(source, err, "Sheet1")
                 conn.Open()

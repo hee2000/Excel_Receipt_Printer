@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("")> 
 <Assembly: AssemblyCompany("Hewlett-Packard")> 
 <Assembly: AssemblyProduct("Oitijhya")> 
-<Assembly: AssemblyCopyright("Copyright © Hewlett-Packard 2011")> 
+<Assembly: AssemblyCopyright("Copyright © Ruddra dev")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
