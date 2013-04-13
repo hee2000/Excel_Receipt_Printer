@@ -10,7 +10,7 @@ Imports System.Runtime.InteropServices
 
 <Assembly: AssemblyTitle("Oitijhya")> 
 <Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("Hewlett-Packard")> 
+<Assembly: AssemblyCompany("Ruddra dev")> 
 <Assembly: AssemblyProduct("Oitijhya")> 
 <Assembly: AssemblyCopyright("Copyright © Ruddra dev")> 
 <Assembly: AssemblyTrademark("")> 
