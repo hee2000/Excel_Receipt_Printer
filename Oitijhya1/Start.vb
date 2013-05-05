@@ -4,18 +4,22 @@ Imports System.Data.Common
 Public Class Start
 
     Private Sub Start_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+
         'SplashScreen.Show()
         cmdLoad.Image = Image.FromFile(System.Windows.Forms.Application.StartupPath & "\Images\new.png")
         cmdInfo.Image = Image.FromFile(System.Windows.Forms.Application.StartupPath & "\Images\info.png")
         cmdSave.Image = Image.FromFile(System.Windows.Forms.Application.StartupPath & "\Images\save.png")
         cmdRollback.Image = Image.FromFile(System.Windows.Forms.Application.StartupPath & "\Images\undo.png")
+        cmdDelete.Image = Image.FromFile(System.Windows.Forms.Application.StartupPath & "\Images\trash.png")
+        cmdFilter.Image = Image.FromFile(System.Windows.Forms.Application.StartupPath & "\Images\filter.png")
         'TODO: This line of code loads data into the 'List1DataSet."& tableName &"' table. You can move, or remove it, as needed.
         initialiseAdaptor()
         'grid properties
         gridView.DataSource = gridDataTable
         gridView.MultiSelect = True
         gridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect
-        optFilter.Enabled = False
+        'gridView.AllowUserToResizeRows = False
+        'optFilter.Enabled = False
         'Threading.Thread.Sleep(1000)
         'SplashScreen.Close()
         'Me.Show()
@@ -28,21 +32,21 @@ Public Class Start
         'excelWorkBook = excelApplication.Workbooks.Open(ASpreadSheet)
         'targetSheet = excelWorkBook.Sheets(1)
         'targetSheet.Activate()
-            Dim connString As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" & ASpreadSheet & ";Extended Properties=""Excel 8.0;HDR=Yes;"""
+        Dim connString As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" & ASpreadSheet & ";Extended Properties=""Excel 8.0;HDR=Yes;"""
         Dim conn As OleDb.OleDbConnection = New OleDb.OleDbConnection(connString)
         Dim Dset As New DataSet
-            AnError = ""
-            Try
-                Using conn
-                    conn.Open()
-                    Dim schemaTable As DataTable = conn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, Nothing)
-                    Dim firstSheetName As String = CType(schemaTable.Rows(0).Item("TABLE_NAME"), String)
-                    Dim MyCommand As OleDbDataAdapter = New OleDbDataAdapter("select * from [" & ASheetName & "$]", conn)
-                    MyCommand.Fill(Dset)
-                End Using
-            Catch ex As Exception
-                AnError = ex.ToString
-                Return Nothing
+        AnError = ""
+        Try
+            Using conn
+                conn.Open()
+                Dim schemaTable As DataTable = conn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, Nothing)
+                Dim firstSheetName As String = CType(schemaTable.Rows(0).Item("TABLE_NAME"), String)
+                Dim MyCommand As OleDbDataAdapter = New OleDbDataAdapter("select * from [" & ASheetName & "$]", conn)
+                MyCommand.Fill(Dset)
+            End Using
+        Catch ex As Exception
+            AnError = ex.ToString
+            Return Nothing
         End Try
         Return Dset.Tables(0)
     End Function
@@ -199,10 +203,14 @@ Public Class Start
         Dim dest As String = System.IO.Directory.GetCurrentDirectory
         If System.IO.File.Exists(source) Then
             If (System.IO.Path.GetExtension(source) = ".xls") Then
-                My.Computer.FileSystem.DeleteFile(dest & "\rollback.accdb", FileIO.UIOption.AllDialogs, _
-                    FileIO.UICancelOption.DoNothing)
-                My.Computer.FileSystem.CopyFile(dest & "\dBase.accdb", dest & "\rollback.accdb", FileIO.UIOption.AllDialogs, _
-                    FileIO.UICancelOption.DoNothing)
+                If (My.Computer.FileSystem.FileExists(dest & "\rollback.accdb")) Then
+                    My.Computer.FileSystem.DeleteFile(dest & "\rollback.accdb", FileIO.UIOption.AllDialogs, _
+                        FileIO.UICancelOption.DoNothing)
+                End If
+                If (My.Computer.FileSystem.FileExists(dest & "\dbase.accdb")) Then
+                    My.Computer.FileSystem.CopyFile(dest & "\dBase.accdb", dest & "\rollback.accdb", FileIO.UIOption.AllDialogs, _
+                        FileIO.UICancelOption.DoNothing)
+                End If
                 Dim tempTable As New DataTable
                 Dim err As String = Nothing
                 tempTable = GetExcelData(source, err, "Sheet1")
@@ -247,40 +255,56 @@ Public Class Start
         End If
     End Sub
     Private Sub dbRollback()
-        Dim root As String = System.IO.Directory.GetCurrentDirectory
-        If System.IO.File.Exists(root & "\rollback.accdb") Then
-            My.Computer.FileSystem.RenameFile(root & "\dBase.accdb", "dBaseTemp.accdb")
-            My.Computer.FileSystem.RenameFile(root & "\rollback.accdb", "dBase.accdb")
-            My.Computer.FileSystem.RenameFile(root & "\dBaseTemp.accdb", "rollback.accdb")
+        If (MsgBox("Restore everything to last saved?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes) Then
+            Dim root As String = System.IO.Directory.GetCurrentDirectory
+            If System.IO.File.Exists(root & "\rollback.accdb") Then
+                My.Computer.FileSystem.RenameFile(root & "\dBase.accdb", "dBaseTemp.accdb")
+                My.Computer.FileSystem.RenameFile(root & "\rollback.accdb", "dBase.accdb")
+                My.Computer.FileSystem.RenameFile(root & "\dBaseTemp.accdb", "rollback.accdb")
+            End If
         End If
     End Sub
-
-    Private Sub updateDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdLoad.Click
+    Private Sub addNew()
         updateDatabase()
         initialiseAdaptor()
     End Sub
-
-    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdRollback.Click
+    Private Sub updateDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdLoad.Click
+        addNew()
+    End Sub
+    Private Sub rollback()
         dbRollback()
         'MsgBox("Hurray! Database rolled back.")
         initialiseAdaptor()
     End Sub
 
-    Private Sub gridView_CellContentClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles gridView.CellContentClick
-
+    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdRollback.Click
+        rollback()
     End Sub
 
+
+
     Private Sub gridView_CellMouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellMouseEventArgs) Handles gridView.CellMouseDown
-        If e.RowIndex >= 0 & e.ColumnIndex >= 0 & e.Button = Windows.Forms.MouseButtons.Right Then
-            gridView.Rows(e.RowIndex).Selected = True
-        End If
+        gridView.RowsDefaultCellStyle.SelectionBackColor = Color.DimGray
+        Try
+            If e.RowIndex >= 0 & e.ColumnIndex >= 0 & e.Button = Windows.Forms.MouseButtons.Right Then
+                gridView.Rows(e.RowIndex).Selected = True
+
+            End If
+        Catch
+        End Try
+    End Sub
+    Private Sub setFilter()
+        FilteredToolStripMenuItem.Enabled = True
+        FullTableToolStripMenuItem.Enabled = True
+        FilteredToolStripMenuItem.Checked = True
+        GridRCMenu.Enabled = False
+        SelectFilter.Show()
+        Me.Enabled = False
+        SetFilterToolStripMenuItem.Enabled = False
     End Sub
 
     Private Sub SetFilterCriteriaToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SetFilterCriteriaToolStripMenuItem.Click
-        optFilter.Visible = True
-        optFull.Visible = True
-        SelectFilter.Show()
-        Me.Enabled = False
+        setFilter()
     End Sub
     Sub showFilteredResults(ByRef filt() As Integer)
         'creating filter structure
@@ -316,8 +340,7 @@ Public Class Start
     Private Sub GridRCMenu_Opening(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles GridRCMenu.Opening
 
     End Sub
-
-    Private Sub DeleteToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteToolStripMenuItem.Click
+    Private Sub delete()
         Dim row As DataGridViewRow
         Dim del As OleDb.OleDbCommand = dAdaptor.DeleteCommand
         For Each row In gridView.SelectedRows
@@ -327,19 +350,22 @@ Public Class Start
         Next
 
     End Sub
+    Private Sub DeleteToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteToolStripMenuItem.Click
+        delete()
+    End Sub
 
     Private Sub RadioButton1_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles optFilter.CheckedChanged
-        If optFilter.Checked = True Then
-            cmdLoad.Enabled = False
-            cmdSave.Enabled = False
-            cmdRollback.Enabled = False
-            cmdPrint.Enabled = True
-            If filteredData Is Nothing Then
-                MsgBox("Set a Filter First")
-            Else
-                gridView.DataSource = filteredData
-            End If
+
+        cmdLoad.Enabled = False
+        cmdSave.Enabled = False
+        cmdRollback.Enabled = False
+        cmdPrint.Enabled = True
+        If filteredData Is Nothing Then
+            MsgBox("Set a Filter First")
+        Else
+            gridView.DataSource = filteredData
         End If
+        'End If
     End Sub
 
     Private Sub RadioButton2_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles optFull.CheckedChanged
@@ -352,8 +378,7 @@ Public Class Start
             gridView.DataSource = gridDataTable
         End If
     End Sub
-
-    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSave.Click
+    Private Sub DBsave()
         If MsgBox("Are you sure? Changes will be permanent.", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
             'MsgBox(dAdaptor.UpdateCommand.CommandText.ToString)
             conn.Open()
@@ -361,12 +386,14 @@ Public Class Start
             conn.Close()
         End If
     End Sub
+    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSave.Click
+        DBsave()
+    End Sub
 
     Private Sub cmdPrint_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdPrint.Click
         printDialog.Show()
     End Sub
-
-    Private Sub PrintSelectedToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PrintSelectedToolStripMenuItem.Click
+    Private Sub printSelected()
         'reportDset.reportTableDataTable = gridDataTable
         reportTable = gridDataTable.Clone
         Dim selectrow As DataRow
@@ -374,9 +401,14 @@ Public Class Start
             For Each temprow As DataGridViewRow In gridView.SelectedRows
                 selectrow = reportTable.NewRow()
                 For i = 0 To reportTable.Columns.Count - 1
-                    selectrow(i) = temprow.Cells(i).Value
+                    Try
+                        selectrow(i) = temprow.Cells(i).Value
+                    Catch
+                        GoTo emptyrow
+                    End Try
                 Next
                 reportTable.Rows.Add(selectrow)
+emptyrow:
             Next
         Else
             MsgBox("Please select rows to be printed")
@@ -385,8 +417,172 @@ Public Class Start
         ReportViewer.Show()
 
     End Sub
+    Private Sub PrintSelectedToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PrintSelectedToolStripMenuItem.Click
+        printSelected()
+    End Sub
 
     Private Sub cmdInfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdInfo.Click
         AboutBox1.Show()
+    End Sub
+
+    Private Sub SelectAllToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectAllToolStripMenuItem.Click
+        gridView.SelectAll()
+    End Sub
+
+    Private Sub InsertBelowToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
+    End Sub
+
+    Private Sub LoadNewToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles LoadNewToolStripMenuItem.Click
+        addNew()
+    End Sub
+
+    Private Sub SaveToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SaveToolStripMenuItem.Click
+        DBsave()
+    End Sub
+
+    Private Sub RestoreToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RestoreToolStripMenuItem.Click
+        rollback()
+    End Sub
+
+    Private Sub DeleteToolStripMenuItem1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteToolStripMenuItem1.Click
+        delete()
+    End Sub
+
+    Private Sub SelectAllToolStripMenuItem1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SelectAllToolStripMenuItem1.Click
+        gridView.SelectAll()
+    End Sub
+    Private Sub insertNew()
+        'gridView.Rows(gridView.Rows.Count - 1).Selected = True
+        gridView.BeginEdit(False)
+
+        gridView.CurrentCell = gridView.Rows(gridView.Rows.Count - 1).Cells(0)
+        gridView.BeginEdit(False)
+    End Sub
+    Private Sub InsertNewToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles InsertNewToolStripMenuItem.Click
+        insertNew()
+    End Sub
+
+    Private Sub ExitToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ExitToolStripMenuItem.Click
+        Me.Close()
+    End Sub
+
+    Private Sub AboutToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AboutToolStripMenuItem.Click
+        AboutBox1.Show()
+    End Sub
+
+    Private Sub PrintSelectedToolStripMenuItem1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PrintSelectedToolStripMenuItem1.Click
+        printSelected()
+    End Sub
+
+    Private Sub InstructionsToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles InstructionsToolStripMenuItem.Click
+        Instructions.Show()
+
+    End Sub
+
+    Private Sub ToolTip1_Popup(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PopupEventArgs) Handles ToolTip1.Popup
+
+    End Sub
+
+    Private Sub InsertToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles InsertToolStripMenuItem.Click
+        insertNew()
+    End Sub
+
+    Private Sub SetFilterToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SetFilterToolStripMenuItem.Click
+        gridView.SelectAll()
+        gridView.Rows(gridView.Rows.Count - 1).Selected = False
+
+        setFilter()
+        'FullTableToolStripMenuItem.Enabled = True
+        'FilteredToolStripMenuItem.Enabled = True
+        'FilteredToolStripMenuItem.Checked =true
+    End Sub
+
+    Private Sub FullTableToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles FullTableToolStripMenuItem.Click
+        If FullTableToolStripMenuItem.Checked = True Then
+            cmdSave.Enabled = True
+            cmdLoad.Enabled = True
+            cmdRollback.Enabled = True
+            cmdPrint.Enabled = False
+            gridView.Columns.Clear()
+            FilteredToolStripMenuItem.Checked = False
+            GridRCMenu.Enabled = True
+            SetFilterToolStripMenuItem.Enabled = True
+            gridView.DataSource = gridDataTable
+        End If
+    End Sub
+
+    Private Sub FilteredToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles FilteredToolStripMenuItem.Click
+        If (FilteredToolStripMenuItem.Checked = True) Then
+            cmdLoad.Enabled = False
+            cmdSave.Enabled = False
+            cmdRollback.Enabled = False
+            cmdPrint.Enabled = True
+            FullTableToolStripMenuItem.Checked = False
+            GridRCMenu.Enabled = False
+            SetFilterToolStripMenuItem.Enabled = False
+            If filteredData Is Nothing Then
+                MsgBox("Set a Filter First")
+            Else
+                gridView.DataSource = filteredData
+            End If
+        End If
+    End Sub
+
+
+    Private Sub cmdLoad_MouseEnter(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdLoad.MouseEnter
+        cmdLoad.Image = Image.FromFile(System.Windows.Forms.Application.StartupPath & "\Images\newh.png")
+    End Sub
+
+    Private Sub cmdLoad_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdLoad.MouseLeave
+        cmdLoad.Image = Image.FromFile(System.Windows.Forms.Application.StartupPath & "\Images\new.png")
+    End Sub
+
+    Private Sub cmdRollback_MouseEnter(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdRollback.MouseEnter
+        cmdRollback.Image = Image.FromFile(System.Windows.Forms.Application.StartupPath & "\Images\undoh.png")
+    End Sub
+
+    Private Sub cmdRollback_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdRollback.MouseLeave
+        cmdRollback.Image = Image.FromFile(System.Windows.Forms.Application.StartupPath & "\Images\undo.png")
+    End Sub
+
+    Private Sub cmdSave_MouseEnter(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdSave.MouseEnter
+        cmdSave.Image = Image.FromFile(System.Windows.Forms.Application.StartupPath & "\Images\saveh.png")
+    End Sub
+
+    Private Sub cmdSave_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdSave.MouseLeave
+        cmdSave.Image = Image.FromFile(System.Windows.Forms.Application.StartupPath & "\Images\save.png")
+    End Sub
+
+    Private Sub cmdFilter_MouseEnter(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdFilter.MouseEnter
+        cmdFilter.Image = Image.FromFile(System.Windows.Forms.Application.StartupPath & "\Images\filterh.png")
+    End Sub
+
+    Private Sub cmdFilter_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdFilter.MouseLeave
+        cmdFilter.Image = Image.FromFile(System.Windows.Forms.Application.StartupPath & "\Images\filter.png")
+    End Sub
+
+    Private Sub cmdDelete_MouseEnter(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdDelete.MouseEnter
+        cmdDelete.Image = Image.FromFile(System.Windows.Forms.Application.StartupPath & "\Images\trashh.png")
+    End Sub
+
+    Private Sub cmdDelete_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdDelete.MouseLeave
+        cmdDelete.Image = Image.FromFile(System.Windows.Forms.Application.StartupPath & "\Images\trash.png")
+    End Sub
+
+    Private Sub cmdInfo_MouseEnter(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdInfo.MouseEnter
+        cmdInfo.Image = Image.FromFile(System.Windows.Forms.Application.StartupPath & "\Images\infoh.png")
+    End Sub
+
+    Private Sub cmdInfo_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdInfo.MouseLeave
+        cmdInfo.Image = Image.FromFile(System.Windows.Forms.Application.StartupPath & "\Images\info.png")
+    End Sub
+
+    Private Sub cmdDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdDelete.Click
+        delete()
+    End Sub
+
+    Private Sub cmdFilter_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdFilter.Click
+        setFilter()
     End Sub
 End Class
